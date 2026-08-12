@@ -3,1273 +3,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>LLE</title>
-
 <style>
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth}
+body{font-family:Arial,sans-serif;background:#070707;color:#fff;line-height:1.8}
+a{color:inherit;text-decoration:none}
+header{position:fixed;top:0;right:0;left:0;z-index:1000;background:rgba(5,5,5,.75);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08)}
+.navbar{max-width:1150px;margin:auto;padding:18px 25px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:25px;font-weight:900;letter-spacing:3px}
+nav{display:flex;gap:25px}
+nav a{color:#999;font-size:14px;transition:.3s}
+nav a:hover{color:#fff}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:130px 20px 80px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,rgba(255,255,255,.08),transparent 45%);pointer-events:none}
+.hero-content{width:100%;max-width:900px;position:relative;z-index:2}
+.badge{display:inline-block;padding:7px 18px;border:1px solid #333;border-radius:50px;color:#999;font-size:13px;margin-bottom:25px}
+.hero h1{font-size:clamp(70px,14vw,140px);line-height:.9;letter-spacing:8px;font-weight:900;margin-bottom:25px}
+.hero-description{max-width:650px;margin:auto;color:#999;font-size:17px}
+.hero-image{width:min(480px,90vw);margin:45px auto 0;border-radius:25px;overflow:hidden;border:1px solid #292929;box-shadow:0 30px 90px rgba(0,0,0,.7)}
+.hero-image img{display:block;width:100%;height:auto}
+.buttons{margin-top:30px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.button{padding:12px 25px;border-radius:12px;background:#fff;color:#000;font-weight:bold;transition:.3s}
+.button:hover{transform:translateY(-3px)}
+.button.dark{background:#151515;color:#fff;border:1px solid #333}
+section{max-width:1150px;margin:auto;padding:100px 25px}
+.section-label{color:#555;font-size:13px;letter-spacing:3px;margin-bottom:8px}
+section h2{font-size:clamp(38px,6vw,65px);line-height:1.1;margin-bottom:20px}
+.intro{max-width:700px;color:#888;font-size:17px}
+.about-box{margin-top:45px;padding:35px;background:linear-gradient(145deg,#171717,#0c0c0c);border:1px solid #292929;border-radius:25px}
+.about-box p{color:#999;margin-bottom:15px}
+.about-box p:last-child{margin-bottom:0}
+.about-box strong{color:#fff}
+.characters-grid{margin-top:45px;display:grid;grid-template-columns:repeat(2,1fr);gap:25px}
+.character-card{height:430px;perspective:1200px;cursor:pointer}
+.character-inner{position:relative;width:100%;height:100%;transition:transform .7s;transform-style:preserve-3d}
+.character-card.flipped .character-inner{transform:rotateY(180deg)}
+.character-front,.character-back{position:absolute;inset:0;width:100%;height:100%;border-radius:25px;overflow:hidden;border:1px solid #292929;backface-visibility:hidden;background:linear-gradient(145deg,#171717,#0c0c0c)}
+.character-front{display:flex;flex-direction:column;justify-content:flex-end}
+.character-front img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.character-front::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.05) 65%)}
+.character-front-info{position:relative;z-index:2;padding:28px}
+.character-number{color:#777;font-size:12px;letter-spacing:3px}
+.character-front h3{font-size:30px;margin:5px 0}
+.character-front p{color:#aaa;font-size:14px}
+.flip-hint{color:#777;margin-top:12px;font-size:13px}
+.character-back{transform:rotateY(180deg);padding:32px;display:flex;flex-direction:column;justify-content:center}
+.file-number{color:#555;font-size:12px;letter-spacing:3px;margin-bottom:15px}
+.character-back h3{font-size:32px;margin-bottom:18px}
+.character-back p{color:#999;font-size:15px;line-height:2}
+.return{margin-top:25px;color:#666;font-size:13px}
+.content-grid{margin-top:45px;display:grid;grid-template-columns:repeat(2,1fr);gap:25px}
+.content-box{min-height:340px;padding:35px;border-radius:25px;border:1px solid #292929;background:radial-gradient(circle at top right,rgba(255,255,255,.07),transparent 45%),linear-gradient(145deg,#171717,#0c0c0c);display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;transition:.35s}
+.content-box:hover{transform:translateY(-6px);border-color:#444;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.content-icon{position:absolute;top:30px;left:30px;width:58px;height:58px;display:flex;align-items:center;justify-content:center;border-radius:18px;background:#111;border:1px solid #292929;color:#777;font-size:24px}
+.content-number{color:#555;font-size:12px;letter-spacing:3px;margin-bottom:8px}
+.content-box h3{font-size:38px;margin-bottom:8px}
+.content-box p{color:#888;font-size:15px;max-width:500px}
+.content-box .buttons{margin-top:22px}
+.stats-section{padding-top:30px}
+.stats-grid{margin-top:45px;display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.stat-card{padding:35px 25px;min-height:180px;border-radius:25px;border:1px solid #292929;background:linear-gradient(145deg,#171717,#0c0c0c);text-align:center;display:flex;flex-direction:column;justify-content:center;transition:.35s}
+.stat-card:hover{transform:translateY(-5px);border-color:#444;background:linear-gradient(145deg,#1b1b1b,#0c0c0c)}
+.stat-number{font-size:clamp(38px,5vw,58px);font-weight:900;line-height:1.1;letter-spacing:-1px;color:#fff}
+.stat-label{margin-top:10px;color:#777;font-size:14px}
+.discord-box{margin-top:45px;padding:45px 35px;border-radius:28px;border:1px solid #292929;background:radial-gradient(circle at top right,rgba(255,255,255,.08),transparent 45%),linear-gradient(145deg,#171717,#0c0c0c);text-align:center}
+.discord-box h3{font-size:35px;margin-bottom:10px}
+.discord-box p{max-width:650px;margin:auto;color:#888}
+.discord-button{display:inline-block;margin-top:25px;padding:13px 28px;border-radius:13px;background:#fff;color:#000;font-weight:bold;transition:.3s}
+.discord-button:hover{transform:translateY(-4px)}
+.socials{margin-top:35px;display:flex;flex-wrap:wrap;gap:12px}
+.social{padding:14px 23px;border-radius:13px;background:#121212;border:1px solid #292929;color:#aaa;transition:.3s}
+.social:hover{color:#fff;border-color:#666;transform:translateY(-4px)}
+footer{text-align:center;padding:50px 20px;border-top:1px solid #191919;color:#555}
+footer strong{color:#aaa}
+@media(max-width:750px){
+nav{display:none}
+.navbar{justify-content:center}
+.hero{padding-top:110px}
+.hero h1{font-size:75px;letter-spacing:4px}
+.hero-description{font-size:15px}
+section{padding:75px 20px}
+.characters-grid{grid-template-columns:1fr;gap:20px}
+.character-card{height:400px}
+.content-grid{grid-template-columns:1fr}
+.content-box{min-height:310px;padding:28px}
+.content-box h3{font-size:32px}
+.stats-section{padding-top:10px}
+.stats-grid{grid-template-columns:1fr;gap:15px}
+.stat-card{min-height:150px;padding:28px 20px}
+.stat-number{font-size:45px}
+.about-box{padding:25px}
+.discord-box{padding:35px 22px}
 }
-
-body {
-    font-family: Arial, sans-serif;
-    background: #070707;
-    color: #fff;
-    line-height: 1.8;
+@media(max-width:420px){
+.hero h1{font-size:65px}
+.hero-image{margin-top:35px}
+.content-box{min-height:290px}
+.content-icon{top:22px;left:22px}
 }
-
-a {
-    color: inherit;
-    text-decoration: none;
-}
-
-
-/* ================= NAVBAR ================= */
-
-header {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1000;
-
-    background: rgba(5,5,5,0.75);
-    backdrop-filter: blur(18px);
-
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-.navbar {
-    max-width: 1150px;
-    margin: auto;
-
-    padding: 18px 25px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.logo {
-    font-size: 25px;
-    font-weight: 900;
-    letter-spacing: 3px;
-}
-
-nav {
-    display: flex;
-    gap: 25px;
-}
-
-nav a {
-    color: #999;
-    font-size: 14px;
-    transition: 0.3s;
-}
-
-nav a:hover {
-    color: #fff;
-}
-
-
-/* ================= HERO ================= */
-
-.hero {
-    min-height: 100vh;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    padding: 130px 20px 80px;
-
-    position: relative;
-    overflow: hidden;
-}
-
-.hero::before {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(255,255,255,0.08),
-            transparent 45%
-        );
-
-    pointer-events: none;
-}
-
-.hero-content {
-    width: 100%;
-    max-width: 900px;
-
-    position: relative;
-    z-index: 2;
-}
-
-.badge {
-    display: inline-block;
-
-    padding: 7px 18px;
-
-    border: 1px solid #333;
-    border-radius: 50px;
-
-    color: #999;
-
-    font-size: 13px;
-
-    margin-bottom: 25px;
-}
-
-.hero h1 {
-    font-size: clamp(70px, 14vw, 140px);
-
-    line-height: 0.9;
-
-    letter-spacing: 8px;
-
-    font-weight: 900;
-
-    margin-bottom: 25px;
-}
-
-.hero-description {
-    max-width: 650px;
-
-    margin: auto;
-
-    color: #999;
-
-    font-size: 17px;
-}
-
-.hero-image {
-    width: min(480px, 90vw);
-
-    margin: 45px auto 0;
-
-    border-radius: 25px;
-
-    overflow: hidden;
-
-    border: 1px solid #292929;
-
-    box-shadow:
-        0 30px 90px rgba(0,0,0,0.7);
-}
-
-.hero-image img {
-    display: block;
-
-    width: 100%;
-
-    height: auto;
-}
-
-.buttons {
-    margin-top: 30px;
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 12px;
-
-    flex-wrap: wrap;
-}
-
-.button {
-    padding: 12px 25px;
-
-    border-radius: 12px;
-
-    background: #fff;
-
-    color: #000;
-
-    font-weight: bold;
-
-    transition: 0.3s;
-}
-
-.button:hover {
-    transform: translateY(-3px);
-}
-
-.button.dark {
-    background: #151515;
-
-    color: #fff;
-
-    border: 1px solid #333;
-}
-
-
-/* ================= SECTIONS ================= */
-
-section {
-    max-width: 1150px;
-
-    margin: auto;
-
-    padding: 100px 25px;
-}
-
-.section-label {
-    color: #555;
-
-    font-size: 13px;
-
-    letter-spacing: 3px;
-
-    margin-bottom: 8px;
-}
-
-section h2 {
-    font-size: clamp(38px, 6vw, 65px);
-
-    line-height: 1.1;
-
-    margin-bottom: 20px;
-}
-
-.intro {
-    max-width: 700px;
-
-    color: #888;
-
-    font-size: 17px;
-}
-
-
-/* ================= ABOUT ================= */
-
-.about-box {
-    margin-top: 45px;
-
-    padding: 35px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #171717,
-            #0c0c0c
-        );
-
-    border: 1px solid #292929;
-
-    border-radius: 25px;
-}
-
-.about-box p {
-    color: #999;
-
-    margin-bottom: 15px;
-}
-
-.about-box p:last-child {
-    margin-bottom: 0;
-}
-
-.about-box strong {
-    color: #fff;
-}
-
-
-/* ================= CHARACTERS ================= */
-
-.characters-grid {
-    margin-top: 45px;
-
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 25px;
-}
-
-
-/* البطاقة */
-
-.character-card {
-    height: 430px;
-
-    perspective: 1200px;
-
-    cursor: pointer;
-}
-
-
-/* الجزء الداخلي */
-
-.character-inner {
-    position: relative;
-
-    width: 100%;
-    height: 100%;
-
-    transition: transform 0.7s;
-
-    transform-style: preserve-3d;
-}
-
-
-/* عند الضغط */
-
-.character-card.flipped .character-inner {
-    transform: rotateY(180deg);
-}
-
-
-/* الوجهين */
-
-.character-front,
-.character-back {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    border-radius: 25px;
-
-    overflow: hidden;
-
-    border: 1px solid #292929;
-
-    backface-visibility: hidden;
-
-    background:
-        linear-gradient(
-            145deg,
-            #171717,
-            #0c0c0c
-        );
-}
-
-
-/* الوجه الأمامي */
-
-.character-front {
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: flex-end;
-}
-
-.character-front img {
-    position: absolute;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-
-/* التدرج فوق الصورة */
-
-.character-front::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    background:
-        linear-gradient(
-            to top,
-            rgba(0,0,0,0.95),
-            rgba(0,0,0,0.05) 65%
-        );
-}
-
-
-/* معلومات الوجه الأمامي */
-
-.character-front-info {
-    position: relative;
-
-    z-index: 2;
-
-    padding: 28px;
-}
-
-.character-number {
-    color: #777;
-
-    font-size: 12px;
-
-    letter-spacing: 3px;
-}
-
-.character-front h3 {
-    font-size: 30px;
-
-    margin: 5px 0;
-}
-
-.character-front p {
-    color: #aaa;
-
-    font-size: 14px;
-}
-
-.flip-hint {
-    color: #777;
-
-    margin-top: 12px;
-
-    font-size: 13px;
-}
-
-
-/* الوجه الخلفي */
-
-.character-back {
-    transform: rotateY(180deg);
-
-    padding: 32px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-}
-
-.file-number {
-    color: #555;
-
-    font-size: 12px;
-
-    letter-spacing: 3px;
-
-    margin-bottom: 15px;
-}
-
-.character-back h3 {
-    font-size: 32px;
-
-    margin-bottom: 18px;
-}
-
-.character-back p {
-    color: #999;
-
-    font-size: 15px;
-
-    line-height: 2;
-}
-
-.return {
-    margin-top: 25px;
-
-    color: #666;
-
-    font-size: 13px;
-}
-
-
-/* ================= CONTENT ================= */
-
-.content-grid {
-    margin-top: 45px;
-
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 25px;
-}
-
-.content-box {
-    min-height: 280px;
-
-    padding: 35px;
-
-    border-radius: 25px;
-
-    border: 1px solid #292929;
-
-    background:
-        linear-gradient(
-            145deg,
-            #171717,
-            #0c0c0c
-        );
-
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: flex-end;
-}
-
-.content-box h3 {
-    font-size: 32px;
-
-    margin-bottom: 8px;
-}
-
-.content-box p {
-    color: #888;
-
-    font-size: 15px;
-}
-
-
-/* ================= COMMUNITY ================= */
-
-.discord-box {
-    margin-top: 45px;
-
-    padding: 45px 35px;
-
-    border-radius: 28px;
-
-    border: 1px solid #292929;
-
-    background:
-        radial-gradient(
-            circle at top right,
-            rgba(255,255,255,0.08),
-            transparent 45%
-        ),
-        linear-gradient(
-            145deg,
-            #171717,
-            #0c0c0c
-        );
-
-    text-align: center;
-}
-
-.discord-box h3 {
-    font-size: 35px;
-
-    margin-bottom: 10px;
-}
-
-.discord-box p {
-    max-width: 650px;
-
-    margin: auto;
-
-    color: #888;
-}
-
-.discord-button {
-    display: inline-block;
-
-    margin-top: 25px;
-
-    padding: 13px 28px;
-
-    border-radius: 13px;
-
-    background: #fff;
-
-    color: #000;
-
-    font-weight: bold;
-
-    transition: 0.3s;
-}
-
-.discord-button:hover {
-    transform: translateY(-4px);
-}
-
-
-/* ================= SOCIAL ================= */
-
-.socials {
-    margin-top: 35px;
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 12px;
-}
-
-.social {
-    padding: 14px 23px;
-
-    border-radius: 13px;
-
-    background: #121212;
-
-    border: 1px solid #292929;
-
-    color: #aaa;
-
-    transition: 0.3s;
-}
-
-.social:hover {
-    color: #fff;
-
-    border-color: #666;
-
-    transform: translateY(-4px);
-}
-
-
-/* ================= FOOTER ================= */
-
-footer {
-    text-align: center;
-
-    padding: 50px 20px;
-
-    border-top: 1px solid #191919;
-
-    color: #555;
-}
-
-footer strong {
-    color: #aaa;
-}
-
-
-/* ================= MOBILE ================= */
-
-@media (max-width: 750px) {
-
-    nav {
-        display: none;
-    }
-
-    .navbar {
-        justify-content: center;
-    }
-
-    .hero {
-        padding-top: 110px;
-    }
-
-    .hero h1 {
-        font-size: 75px;
-
-        letter-spacing: 4px;
-    }
-
-    .hero-description {
-        font-size: 15px;
-    }
-
-    section {
-        padding: 75px 20px;
-    }
-
-    .characters-grid {
-        grid-template-columns: 1fr;
-
-        gap: 20px;
-    }
-
-    .character-card {
-        height: 400px;
-    }
-
-    .content-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .about-box {
-        padding: 25px;
-    }
-
-    .discord-box {
-        padding: 35px 22px;
-    }
-
-}
-
 </style>
 </head>
-
-
 <body>
 
-
-<!-- ================= NAVBAR ================= -->
-
 <header>
-
 <div class="navbar">
-
-    <div class="logo">
-        LLE
-    </div>
-
-    <nav>
-
-        <a href="#home">
-            الرئيسية
-        </a>
-
-        <a href="#about">
-            عن LLE
-        </a>
-
-        <a href="#characters">
-            الشخصيات
-        </a>
-
-        <a href="#content">
-            المحتوى
-        </a>
-
-        <a href="#community">
-            المجتمع
-        </a>
-
-        <a href="#social">
-            الحسابات
-        </a>
-
-    </nav>
-
+<div class="logo">LLE</div>
+<nav>
+<a href="#home">الرئيسية</a>
+<a href="#about">عن LLE</a>
+<a href="#characters">الشخصيات</a>
+<a href="#content">المحتوى</a>
+<a href="#stats">الإحصائيات</a>
+<a href="#community">المجتمع</a>
+<a href="#social">الحسابات</a>
+</nav>
 </div>
-
 </header>
 
-
-<!-- ================= HERO ================= -->
-
 <section class="hero" id="home">
-
 <div class="hero-content">
-
-    <div class="badge">
-        LLE • CONTENT CREATOR
-    </div>
-
-    <h1>
-        LLE
-    </h1>
-
-    <p class="hero-description">
-        عالم من الشخصيات والمحتوى واللحظات
-        التي صنعت رحلة LLE مع جمهوره.
-    </p>
-
-
-    <div class="hero-image">
-
-        <img
-            src="IMG_6546.jpeg"
-            alt="LLE"
-        >
-
-    </div>
-
-
-    <div class="buttons">
-
-        <a
-            class="button"
-            href="#characters"
-        >
-            اكتشف الشخصيات
-        </a>
-
-        <a
-            class="button dark"
-            href="#community"
-        >
-            المجتمع
-        </a>
-
-    </div>
-
+<div class="badge">LLE • CONTENT CREATOR</div>
+<h1>LLE</h1>
+<p class="hero-description">عالم من الشخصيات والمحتوى واللحظات التي صنعت رحلة LLE مع جمهوره.</p>
+<div class="hero-image">
+<img src="IMG_6546.jpeg" alt="LLE">
 </div>
-
+<div class="buttons">
+<a class="button" href="#characters">اكتشف الشخصيات</a>
+<a class="button dark" href="#content">شاهد المحتوى</a>
+</div>
+</div>
 </section>
-
-
-<!-- ================= ABOUT ================= -->
 
 <section id="about">
-
-    <div class="section-label">
-        ABOUT
-    </div>
-
-    <h2>
-        عن LLE
-    </h2>
-
-    <p class="intro">
-        أكثر من مجرد صانع محتوى.
-        عالم من الشخصيات والبثوث والمقاطع
-        واللحظات التي صنعت ذكريات مختلفة
-        مع الجمهور.
-    </p>
-
-
-    <div class="about-box">
-
-        <p>
-            هنا مكان يجمع أبرز الأشياء
-            التي صنعت عالم LLE.
-        </p>
-
-        <p>
-            من الشخصيات والتجسيدات،
-            إلى البثوث والمقاطع واللحظات
-            التي بقيت في ذاكرة الجمهور.
-        </p>
-
-        <p>
-            <strong>
-                كل شخصية لها قصة، وكل لحظة لها ذكرى.
-            </strong>
-        </p>
-
-    </div>
-
+<div class="section-label">ABOUT</div>
+<h2>عن LLE</h2>
+<p class="intro">أكثر من مجرد صانع محتوى. عالم من الشخصيات والبثوث والمقاطع واللحظات التي صنعت ذكريات مختلفة مع الجمهور.</p>
+<div class="about-box">
+<p>هنا مكان يجمع أبرز الأشياء التي صنعت عالم LLE.</p>
+<p>من الشخصيات والتجسيدات، إلى البثوث والمقاطع واللحظات التي بقيت في ذاكرة الجمهور.</p>
+<p><strong>كل شخصية لها قصة، وكل لحظة لها ذكرى.</strong></p>
+</div>
 </section>
-
-
-<!-- ================= CHARACTERS ================= -->
 
 <section id="characters">
+<div class="section-label">CHARACTERS</div>
+<h2>شخصيات عشناها معه</h2>
+<p class="intro">اضغط على أي شخصية لقلب البطاقة وقراءة ملفها.</p>
+<div class="characters-grid">
 
-    <div class="section-label">
-        CHARACTERS
-    </div>
+<div class="character-card" onclick="this.classList.toggle('flipped')">
+<div class="character-inner">
+<div class="character-front">
+<img src="IMG_8101.jpeg" alt="الشرطي للي">
+<div class="character-front-info">
+<div class="character-number">FILE 01</div>
+<h3>الشرطي للي</h3>
+<p>أحد أشهر تجسيدات للي</p>
+<div class="flip-hint">اضغط لقلب البطاقة وقراءة الملف ↻</div>
+</div>
+</div>
+<div class="character-back">
+<div class="file-number">FILE 01 • POLICE</div>
+<h3>الشرطي للي</h3>
+<p>أحد أشهر تجسيدات للي، شخصية صنعت حضورًا خاصًا في المحتوى والبثوث، وارتبطت بالكثير من المواقف واللحظات التي عشناها معه.</p>
+<div class="return">↻ اضغط للعودة</div>
+</div>
+</div>
+</div>
 
-    <h2>
-        شخصيات عشناها معه
-    </h2>
+<div class="character-card" onclick="this.classList.toggle('flipped')">
+<div class="character-inner">
+<div class="character-front">
+<img src="7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg" alt="Better Call LLE">
+<div class="character-front-info">
+<div class="character-number">FILE 02</div>
+<h3>Better Call LLE</h3>
+<p>المحامي للي</p>
+<div class="flip-hint">اضغط لقلب البطاقة وقراءة الملف ↻</div>
+</div>
+</div>
+<div class="character-back">
+<div class="file-number">FILE 02 • LAWYER</div>
+<h3>Better Call LLE</h3>
+<p>المحامي للي، واحدة من أشهر الشخصيات والتجسيدات التي ظهرت معه، بشخصية مختلفة وأسلوب خاص ترك بصمته في المحتوى.</p>
+<div class="return">↻ اضغط للعودة</div>
+</div>
+</div>
+</div>
 
-    <p class="intro">
-        اضغط على أي شخصية لقلب البطاقة
-        وقراءة ملفها.
-    </p>
-
-
-    <div class="characters-grid">
-
-
-        <!-- ================= الشرطي ================= -->
-
-        <div
-            class="character-card"
-            onclick="this.classList.toggle('flipped')"
-        >
-
-            <div class="character-inner">
-
-
-                <div class="character-front">
-
-                    <img
-                        src="IMG_8101.jpeg"
-                        alt="الشرطي للي"
-                    >
-
-                    <div class="character-front-info">
-
-                        <div class="character-number">
-                            FILE 01
-                        </div>
-
-                        <h3>
-                            الشرطي للي
-                        </h3>
-
-                        <p>
-                            أحد أشهر تجسيدات للي
-                        </p>
-
-                        <div class="flip-hint">
-                            اضغط لقلب البطاقة وقراءة الملف ↻
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="character-back">
-
-                    <div class="file-number">
-                        FILE 01 • POLICE
-                    </div>
-
-                    <h3>
-                        الشرطي للي
-                    </h3>
-
-                    <p>
-                        أحد أشهر تجسيدات للي،
-                        شخصية صنعت حضورًا خاصًا في
-                        المحتوى والبثوث، وارتبطت بالكثير
-                        من المواقف واللحظات التي عشناها معه.
-                    </p>
-
-                    <div class="return">
-                        ↻ اضغط للعودة
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-
-        <!-- ================= المحامي ================= -->
-
-        <div
-            class="character-card"
-            onclick="this.classList.toggle('flipped')"
-        >
-
-            <div class="character-inner">
-
-
-                <div class="character-front">
-
-                    <img
-                        src="7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg"
-                        alt="Better Call LLE"
-                    >
-
-                    <div class="character-front-info">
-
-                        <div class="character-number">
-                            FILE 02
-                        </div>
-
-                        <h3>
-                            Better Call LLE
-                        </h3>
-
-                        <p>
-                            المحامي للي
-                        </p>
-
-                        <div class="flip-hint">
-                            اضغط لقلب البطاقة وقراءة الملف ↻
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="character-back">
-
-                    <div class="file-number">
-                        FILE 02 • LAWYER
-                    </div>
-
-                    <h3>
-                        Better Call LLE
-                    </h3>
-
-                    <p>
-                        المحامي للي،
-                        واحدة من أشهر الشخصيات
-                        والتجسيدات التي ظهرت معه،
-                        بشخصية مختلفة وأسلوب خاص
-                        ترك بصمته في المحتوى.
-                    </p>
-
-                    <div class="return">
-                        ↻ اضغط للعودة
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-
-    </div>
-
+</div>
 </section>
-
-
-<!-- ================= CONTENT ================= -->
 
 <section id="content">
+<div class="section-label">CONTENT</div>
+<h2>البثوث والمقاطع</h2>
+<p class="intro">تابع البثوث والمقاطع وشاهد أبرز اللحظات من محتوى LLE.</p>
+<div class="content-grid">
 
-    <div class="section-label">
-        CONTENT
-    </div>
+<div class="content-box">
+<div class="content-icon">▶</div>
+<div class="content-number">LIVE • 01</div>
+<h3>البثوث</h3>
+<p>اللحظات العفوية والمواقف التي تحدث مباشرة أمام الجمهور.</p>
+<div class="buttons" style="justify-content:flex-start;">
+<a class="button dark" href="https://kick.com/lle" target="_blank" rel="noopener noreferrer">شاهد البثوث ↗</a>
+</div>
+</div>
 
-    <h2>
-        المحتوى
-    </h2>
+<div class="content-box">
+<div class="content-icon">▶</div>
+<div class="content-number">VIDEOS • 02</div>
+<h3>المقاطع</h3>
+<p>أفضل اللحظات والمقاطع التي تستحق المشاهدة مرة ثانية.</p>
+<div class="buttons" style="justify-content:flex-start;">
+<a class="button dark" href="https://www.youtube.com/user/MrLLE99" target="_blank" rel="noopener noreferrer">شاهد المقاطع ↗</a>
+</div>
+</div>
 
-    <p class="intro">
-        من البثوث إلى المقاطع،
-        لكل نوع من المحتوى طابعه الخاص.
-    </p>
-
-
-    <div class="content-grid">
-
-
-        <div class="content-box">
-
-            <h3>
-                البثوث
-            </h3>
-
-            <p>
-                اللحظات العفوية والمواقف
-                التي تحدث مباشرة أمام الجمهور.
-            </p>
-
-            <div
-                class="buttons"
-                style="justify-content:flex-start;"
-            >
-
-                <a
-                    class="button dark"
-                    href="https://kick.com/lle"
-                    target="_blank"
-                >
-                    شاهد البثوث ↗
-                </a>
-
-            </div>
-
-        </div>
-
-
-        <div class="content-box">
-
-            <h3>
-                المقاطع
-            </h3>
-
-            <p>
-                أفضل اللحظات والمقاطع
-                التي تستحق المشاهدة مرة ثانية.
-            </p>
-
-            <div
-                class="buttons"
-                style="justify-content:flex-start;"
-            >
-
-                <a
-                    class="button dark"
-                    href="https://www.youtube.com/user/MrLLE99"
-                    target="_blank"
-                >
-                    شاهد المقاطع ↗
-                </a>
-
-            </div>
-
-        </div>
-
-
-    </div>
-
+</div>
 </section>
 
+<section id="stats" class="stats-section">
+<div class="section-label">STATISTICS</div>
+<h2>أرقام LLE</h2>
+<p class="intro">أرقام تختصر جزءًا من الرحلة والحضور الذي صنعه LLE خلال السنوات.</p>
+<div class="stats-grid">
 
-<!-- ================= COMMUNITY ================= -->
+<div class="stat-card">
+<div class="stat-number">1.91M+</div>
+<div class="stat-label">متابع</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-number">غير محدد</div>
+<div class="stat-label">موعد البثوث</div>
+</div>
+
+<div class="stat-card">
+<div class="stat-number">9+</div>
+<div class="stat-label">سنوات خبرة</div>
+</div>
+
+</div>
+</section>
 
 <section id="community">
-
-    <div class="section-label">
-        COMMUNITY
-    </div>
-
-    <h2>
-        مجتمع LLE
-    </h2>
-
-    <p class="intro">
-        لا تكتفِ بالمشاهدة.
-        كن جزءًا من المجتمع والرحلة.
-    </p>
-
-
-    <div class="discord-box">
-
-        <h3>
-            Discord
-        </h3>
-
-        <p>
-            انضم إلى ديسكورد LLE وكن قريبًا
-            من المجتمع، الأخبار، النقاشات
-            وكل جديد.
-        </p>
-
-        <a
-            class="discord-button"
-            href="https://discord.gg/5MUbA7DZ"
-            target="_blank"
-        >
-            انضم إلى Discord ↗
-        </a>
-
-    </div>
-
+<div class="section-label">COMMUNITY</div>
+<h2>مجتمع LLE</h2>
+<p class="intro">لا تكتفِ بالمشاهدة. كن جزءًا من المجتمع والرحلة.</p>
+<div class="discord-box">
+<h3>Discord</h3>
+<p>انضم إلى ديسكورد LLE وكن قريبًا من المجتمع، الأخبار، النقاشات وكل جديد.</p>
+<a class="discord-button" href="https://discord.gg/5MUbA7DZ" target="_blank" rel="noopener noreferrer">انضم إلى Discord ↗</a>
+</div>
 </section>
-
-
-<!-- ================= SOCIAL ================= -->
 
 <section id="social">
+<div class="section-label">SOCIAL</div>
+<h2>حسابات LLE</h2>
+<p class="intro">تابع LLE على منصاته المختلفة وكن قريبًا من كل جديد.</p>
+<div class="socials">
 
-    <div class="section-label">
-        SOCIAL
-    </div>
+<a class="social" href="https://x.com/lle_97" target="_blank" rel="noopener noreferrer">X / Twitter</a>
+<a class="social" href="https://www.youtube.com/user/MrLLE99" target="_blank" rel="noopener noreferrer">YouTube</a>
+<a class="social" href="https://www.snapchat.com/add/lle_98" target="_blank" rel="noopener noreferrer">Snapchat</a>
+<a class="social" href="https://www.instagram.com/lle_97" target="_blank" rel="noopener noreferrer">Instagram</a>
+<a class="social" href="https://www.instagram.com/channel/AbYY2g4pw9sfF5yi/" target="_blank" rel="noopener noreferrer">قروب Instagram</a>
+<a class="social" href="https://www.tiktok.com/@lle97" target="_blank" rel="noopener noreferrer">TikTok</a>
+<a class="social" href="https://l.jaco.live/Meyxb8wWRc" target="_blank" rel="noopener noreferrer">Jaco</a>
+<a class="social" href="https://twitch.tv/lle_97" target="_blank" rel="noopener noreferrer">Twitch</a>
+<a class="social" href="https://kick.com/lle" target="_blank" rel="noopener noreferrer">Kick</a>
+<a class="social" href="https://discord.gg/5MUbA7DZ" target="_blank" rel="noopener noreferrer">Discord</a>
 
-    <h2>
-        حسابات LLE
-    </h2>
-
-    <p class="intro">
-        تابع LLE على منصاته المختلفة
-        وكن قريبًا من كل جديد.
-    </p>
-
-
-    <div class="socials">
-
-
-        <a
-            class="social"
-            href="https://x.com/lle_97"
-            target="_blank"
-        >
-            X / Twitter
-        </a>
-
-
-        <a
-            class="social"
-            href="https://www.youtube.com/user/MrLLE99"
-            target="_blank"
-        >
-            YouTube
-        </a>
-
-
-        <a
-            class="social"
-            href="https://www.snapchat.com/add/lle_98"
-            target="_blank"
-        >
-            Snapchat
-        </a>
-
-
-        <a
-            class="social"
-            href="https://www.instagram.com/lle_97"
-            target="_blank"
-        >
-            Instagram
-        </a>
-
-
-        <a
-            class="social"
-            href="https://www.instagram.com/channel/AbYY2g4pw9sfF5yi/"
-            target="_blank"
-        >
-            قروب Instagram
-        </a>
-
-
-        <a
-            class="social"
-            href="https://www.tiktok.com/@lle97"
-            target="_blank"
-        >
-            TikTok
-        </a>
-
-
-        <a
-            class="social"
-            href="https://l.jaco.live/Meyxb8wWRc"
-            target="_blank"
-        >
-            Jaco
-        </a>
-
-
-        <a
-            class="social"
-            href="https://twitch.tv/lle_97"
-            target="_blank"
-        >
-            Twitch
-        </a>
-
-
-        <a
-            class="social"
-            href="https://kick.com/lle"
-            target="_blank"
-        >
-            Kick
-        </a>
-
-
-        <a
-            class="social"
-            href="https://discord.gg/5MUbA7DZ"
-            target="_blank"
-        >
-            Discord
-        </a>
-
-
-    </div>
-
+</div>
 </section>
 
-
-<!-- ================= FOOTER ================= -->
-
 <footer>
-
-    <p>
-        © 2026
-        <strong>LLE</strong>
-        — جميع الحقوق محفوظة
-    </p>
-
+<p>© 2026 <strong>LLE</strong> — جميع الحقوق محفوظة</p>
 </footer>
-
 
 </body>
 </html>
