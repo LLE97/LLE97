@@ -27,6 +27,7 @@ a {
     text-decoration: none;
 }
 
+
 /* ================= NAVBAR ================= */
 
 header {
@@ -35,15 +36,19 @@ header {
     right: 0;
     left: 0;
     z-index: 1000;
-    background: rgba(5,5,5,0.72);
+
+    background: rgba(5,5,5,0.75);
     backdrop-filter: blur(18px);
+
     border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .navbar {
     max-width: 1150px;
     margin: auto;
+
     padding: 18px 25px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -70,97 +75,131 @@ nav a:hover {
     color: #fff;
 }
 
+
 /* ================= HERO ================= */
 
 .hero {
     min-height: 100vh;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     text-align: center;
+
     padding: 130px 20px 80px;
+
     position: relative;
     overflow: hidden;
 }
 
 .hero::before {
     content: "";
+
     position: absolute;
     inset: 0;
+
     background:
         radial-gradient(
             circle at center,
             rgba(255,255,255,0.08),
             transparent 45%
         );
+
     pointer-events: none;
 }
 
 .hero-content {
     width: 100%;
     max-width: 900px;
+
     position: relative;
     z-index: 2;
 }
 
 .badge {
     display: inline-block;
+
     padding: 7px 18px;
+
     border: 1px solid #333;
     border-radius: 50px;
+
     color: #999;
+
     font-size: 13px;
+
     margin-bottom: 25px;
 }
 
 .hero h1 {
     font-size: clamp(70px, 14vw, 140px);
-    line-height: 0.9;
-    letter-spacing: 8px;
-    font-weight: 900;
-    margin-bottom: 25px;
-}
 
-.hero h1 span {
-    color: #666;
+    line-height: 0.9;
+
+    letter-spacing: 8px;
+
+    font-weight: 900;
+
+    margin-bottom: 25px;
 }
 
 .hero-description {
     max-width: 650px;
+
     margin: auto;
+
     color: #999;
+
     font-size: 17px;
 }
 
 .hero-image {
     width: min(480px, 90vw);
+
     margin: 45px auto 0;
+
     border-radius: 25px;
+
     overflow: hidden;
+
     border: 1px solid #292929;
-    box-shadow: 0 30px 90px rgba(0,0,0,0.7);
+
+    box-shadow:
+        0 30px 90px rgba(0,0,0,0.7);
 }
 
 .hero-image img {
     display: block;
+
     width: 100%;
+
     height: auto;
 }
 
 .buttons {
     margin-top: 30px;
+
     display: flex;
+
     justify-content: center;
+
     gap: 12px;
+
     flex-wrap: wrap;
 }
 
 .button {
     padding: 12px 25px;
+
     border-radius: 12px;
+
     background: #fff;
+
     color: #000;
+
     font-weight: bold;
+
     transition: 0.3s;
 }
 
@@ -170,49 +209,72 @@ nav a:hover {
 
 .button.dark {
     background: #151515;
+
     color: #fff;
+
     border: 1px solid #333;
 }
+
 
 /* ================= SECTIONS ================= */
 
 section {
     max-width: 1150px;
+
     margin: auto;
+
     padding: 100px 25px;
 }
 
 .section-label {
     color: #555;
+
     font-size: 13px;
+
     letter-spacing: 3px;
+
     margin-bottom: 8px;
 }
 
 section h2 {
     font-size: clamp(38px, 6vw, 65px);
+
     line-height: 1.1;
+
     margin-bottom: 20px;
 }
 
 .intro {
     max-width: 700px;
+
     color: #888;
+
     font-size: 17px;
 }
+
 
 /* ================= ABOUT ================= */
 
 .about-box {
     margin-top: 45px;
+
     padding: 35px;
-    background: linear-gradient(145deg, #171717, #0c0c0c);
+
+    background:
+        linear-gradient(
+            145deg,
+            #171717,
+            #0c0c0c
+        );
+
     border: 1px solid #292929;
+
     border-radius: 25px;
 }
 
 .about-box p {
     color: #999;
+
     margin-bottom: 15px;
 }
 
@@ -224,121 +286,368 @@ section h2 {
     color: #fff;
 }
 
+
 /* ================= CHARACTERS ================= */
 
 .characters-grid {
     margin-top: 45px;
+
     display: grid;
+
     grid-template-columns: repeat(2, 1fr);
+
     gap: 25px;
 }
 
+
+/* البطاقة */
+
 .character-card {
-    background: #101010;
-    border: 1px solid #292929;
-    border-radius: 25px;
-    overflow: hidden;
-    transition: 0.35s;
+    height: 430px;
+
+    perspective: 1200px;
+
+    cursor: pointer;
 }
 
-.character-card:hover {
-    transform: translateY(-8px);
-    border-color: #555;
-}
 
-.character-card img {
+/* الجزء الداخلي الذي ينقلب */
+
+.character-inner {
+    position: relative;
+
     width: 100%;
-    height: 230px;
-    object-fit: cover;
-    display: block;
+    height: 100%;
+
+    transition: transform 0.7s;
+
+    transform-style: preserve-3d;
 }
 
-.character-info {
-    padding: 25px;
+
+/* عند الضغط */
+
+.character-card.flipped .character-inner {
+    transform: rotateY(180deg);
+}
+
+
+/* الوجهين */
+
+.character-front,
+.character-back {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 25px;
+
+    overflow: hidden;
+
+    border: 1px solid #292929;
+
+    backface-visibility: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            #171717,
+            #0c0c0c
+        );
+}
+
+
+/* الصورة */
+
+.character-front {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: flex-end;
+}
+
+.character-front img {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* طبقة سوداء فوق الصورة */
+
+.character-front::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,0.95),
+            rgba(0,0,0,0.05) 65%
+        );
+}
+
+
+/* معلومات الوجه الأمامي */
+
+.character-front-info {
+    position: relative;
+
+    z-index: 2;
+
+    padding: 28px;
 }
 
 .character-number {
-    color: #555;
+    color: #777;
+
+    font-size: 12px;
+
+    letter-spacing: 3px;
+}
+
+.character-front h3 {
+    font-size: 30px;
+
+    margin: 5px 0;
+}
+
+.character-front p {
+    color: #aaa;
+
+    font-size: 14px;
+}
+
+.flip-hint {
+    color: #777;
+
+    margin-top: 12px;
+
     font-size: 13px;
-    letter-spacing: 2px;
 }
 
-.character-info h3 {
-    font-size: 27px;
-    margin: 8px 0;
+
+/* الوجه الخلفي */
+
+.character-back {
+    transform: rotateY(180deg);
+
+    padding: 32px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
 }
 
-.character-info p {
-    color: #888;
+.file-number {
+    color: #555;
+
+    font-size: 12px;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 15px;
+}
+
+.character-back h3 {
+    font-size: 32px;
+
+    margin-bottom: 18px;
+}
+
+.character-back p {
+    color: #999;
+
     font-size: 15px;
+
+    line-height: 2;
 }
+
+.return {
+    margin-top: 25px;
+
+    color: #666;
+
+    font-size: 13px;
+}
+
 
 /* ================= CONTENT ================= */
 
 .content-grid {
     margin-top: 45px;
+
     display: grid;
+
     grid-template-columns: repeat(2, 1fr);
+
     gap: 25px;
 }
 
 .content-box {
     min-height: 280px;
+
     padding: 35px;
+
     border-radius: 25px;
+
     border: 1px solid #292929;
-    background: linear-gradient(145deg, #171717, #0c0c0c);
+
+    background:
+        linear-gradient(
+            145deg,
+            #171717,
+            #0c0c0c
+        );
+
     display: flex;
+
     flex-direction: column;
+
     justify-content: flex-end;
 }
 
 .content-box h3 {
     font-size: 32px;
+
     margin-bottom: 8px;
 }
 
 .content-box p {
     color: #888;
+
     font-size: 15px;
 }
+
+
+/* ================= DISCORD ================= */
+
+.discord-box {
+    margin-top: 45px;
+
+    padding: 45px 35px;
+
+    border-radius: 28px;
+
+    border: 1px solid #292929;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            rgba(255,255,255,0.08),
+            transparent 45%
+        ),
+        linear-gradient(
+            145deg,
+            #171717,
+            #0c0c0c
+        );
+
+    text-align: center;
+}
+
+.discord-box h3 {
+    font-size: 35px;
+
+    margin-bottom: 10px;
+}
+
+.discord-box p {
+    max-width: 650px;
+
+    margin: auto;
+
+    color: #888;
+}
+
+.discord-button {
+    display: inline-block;
+
+    margin-top: 25px;
+
+    padding: 13px 28px;
+
+    border-radius: 13px;
+
+    background: #fff;
+
+    color: #000;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.discord-button:hover {
+    transform: translateY(-4px);
+}
+
 
 /* ================= SOCIAL ================= */
 
 .socials {
     margin-top: 35px;
+
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 12px;
 }
 
 .social {
     padding: 14px 23px;
+
     border-radius: 13px;
+
     background: #121212;
+
     border: 1px solid #292929;
+
     color: #aaa;
+
     transition: 0.3s;
 }
 
 .social:hover {
     color: #fff;
+
     border-color: #666;
+
     transform: translateY(-4px);
 }
+
 
 /* ================= FOOTER ================= */
 
 footer {
     text-align: center;
+
     padding: 50px 20px;
+
     border-top: 1px solid #191919;
+
     color: #555;
 }
 
 footer strong {
     color: #aaa;
 }
+
 
 /* ================= MOBILE ================= */
 
@@ -358,6 +667,7 @@ footer strong {
 
     .hero h1 {
         font-size: 75px;
+
         letter-spacing: 4px;
     }
 
@@ -371,11 +681,12 @@ footer strong {
 
     .characters-grid {
         grid-template-columns: 1fr;
+
         gap: 20px;
     }
 
-    .character-card img {
-        height: 210px;
+    .character-card {
+        height: 400px;
     }
 
     .content-grid {
@@ -386,12 +697,20 @@ footer strong {
         padding: 25px;
     }
 
+    .discord-box {
+        padding: 35px 22px;
+    }
+
 }
 
 </style>
 </head>
 
+
 <body>
+
+
+<!-- ================= NAVBAR ================= -->
 
 <header>
 
@@ -403,11 +722,25 @@ footer strong {
 
     <nav>
 
-        <a href="#home">الرئيسية</a>
-        <a href="#about">عن LLE</a>
-        <a href="#characters">الشخصيات</a>
-        <a href="#content">المحتوى</a>
-        <a href="#social">الحسابات</a>
+        <a href="#home">
+            الرئيسية
+        </a>
+
+        <a href="#about">
+            عن LLE
+        </a>
+
+        <a href="#characters">
+            الشخصيات
+        </a>
+
+        <a href="#content">
+            المحتوى
+        </a>
+
+        <a href="#community">
+            المجتمع
+        </a>
 
     </nav>
 
@@ -435,6 +768,7 @@ footer strong {
         التي صنعت رحلة LLE مع جمهوره.
     </p>
 
+
     <div class="hero-image">
 
         <img
@@ -444,14 +778,21 @@ footer strong {
 
     </div>
 
+
     <div class="buttons">
 
-        <a class="button" href="#characters">
+        <a
+            class="button"
+            href="#characters"
+        >
             اكتشف الشخصيات
         </a>
 
-        <a class="button dark" href="#social">
-            الحسابات
+        <a
+            class="button dark"
+            href="#community"
+        >
+            المجتمع
         </a>
 
     </div>
@@ -479,6 +820,7 @@ footer strong {
         واللحظات التي صنعت ذكريات مختلفة
         مع الجمهور.
     </p>
+
 
     <div class="about-box">
 
@@ -517,67 +859,156 @@ footer strong {
     </h2>
 
     <p class="intro">
-        من أشهر التجسيدات والشخصيات
-        التي ظهرت في عالم LLE.
+        اضغط على أي شخصية لقلب البطاقة
+        وقراءة ملفها.
     </p>
+
 
     <div class="characters-grid">
 
 
-        <!-- الشرطي LLE -->
+        <!-- ================= الشرطي ================= -->
 
-        <div class="character-card">
+        <div
+            class="character-card"
+            onclick="this.classList.toggle('flipped')"
+        >
 
-            <img
-                src="IMG_8101.jpeg"
-                alt="الشرطي للي"
-            >
+            <div class="character-inner">
 
-            <div class="character-info">
 
-                <div class="character-number">
-                    01
+                <!-- الوجه الأمامي -->
+
+                <div class="character-front">
+
+                    <img
+                        src="IMG_8101.jpeg"
+                        alt="الشرطي للي"
+                    >
+
+                    <div class="character-front-info">
+
+                        <div class="character-number">
+                            FILE 01
+                        </div>
+
+                        <h3>
+                            الشرطي للي
+                        </h3>
+
+                        <p>
+                            أحد أشهر تجسيدات للي
+                        </p>
+
+                        <div class="flip-hint">
+                            اضغط لقلب البطاقة وقراءة الملف ↻
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <h3>
-                    الشرطي للي
-                </h3>
 
-                <p>
-                    أحد أشهر تجسيدات للي،
-                    شخصية صنعت الكثير من المواقف
-                    واللحظات التي عشناها معه.
-                </p>
+                <!-- الوجه الخلفي -->
+
+                <div class="character-back">
+
+                    <div class="file-number">
+                        FILE 01 • POLICE
+                    </div>
+
+                    <h3>
+                        الشرطي للي
+                    </h3>
+
+                    <p>
+                        أحد أشهر تجسيدات للي،
+                        شخصية صنعت حضورًا خاصًا
+                        في المحتوى، وارتبطت بالكثير
+                        من المواقف واللحظات التي
+                        عشناها معه.
+                    </p>
+
+                    <div class="return">
+                        ↻ اضغط للعودة
+                    </div>
+
+                </div>
+
 
             </div>
 
         </div>
 
 
-        <!-- Better Call LLE -->
+        <!-- ================= المحامي ================= -->
 
-        <div class="character-card">
+        <div
+            class="character-card"
+            onclick="this.classList.toggle('flipped')"
+        >
 
-            <img
-                src="7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg"
-                alt="Better Call LLE"
-            >
+            <div class="character-inner">
 
-            <div class="character-info">
 
-                <div class="character-number">
-                    02
+                <!-- الوجه الأمامي -->
+
+                <div class="character-front">
+
+                    <img
+                        src="7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg"
+                        alt="Better Call LLE"
+                    >
+
+                    <div class="character-front-info">
+
+                        <div class="character-number">
+                            FILE 02
+                        </div>
+
+                        <h3>
+                            Better Call LLE
+                        </h3>
+
+                        <p>
+                            المحامي للي
+                        </p>
+
+                        <div class="flip-hint">
+                            اضغط لقلب البطاقة وقراءة الملف ↻
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <h3>
-                    Better Call LLE
-                </h3>
 
-                <p>
-                    المحامي للي،
-                    واحدة من أشهر الشخصيات
-                    والتجسيدات التي ظهرت معه.
-                </p>
+                <!-- الوجه الخلفي -->
+
+                <div class="character-back">
+
+                    <div class="file-number">
+                        FILE 02 • LAWYER
+                    </div>
+
+                    <h3>
+                        Better Call LLE
+                    </h3>
+
+                    <p>
+                        المحامي للي،
+                        واحدة من أشهر الشخصيات
+                        والتجسيدات التي ظهرت معه،
+                        بشخصية مختلفة وأسلوب خاص
+                        ترك بصمته في المحتوى.
+                    </p>
+
+                    <div class="return">
+                        ↻ اضغط للعودة
+                    </div>
+
+                </div>
+
 
             </div>
 
@@ -606,8 +1037,11 @@ footer strong {
         لكل نوع من المحتوى طابعه الخاص.
     </p>
 
+
     <div class="content-grid">
 
+
+        <!-- البثوث -->
 
         <div class="content-box">
 
@@ -620,8 +1054,10 @@ footer strong {
                 التي تحدث مباشرة أمام الجمهور.
             </p>
 
-            <div class="buttons"
-                 style="justify-content:flex-start;">
+            <div
+                class="buttons"
+                style="justify-content:flex-start;"
+            >
 
                 <a
                     class="button dark"
@@ -636,6 +1072,8 @@ footer strong {
         </div>
 
 
+        <!-- المقاطع -->
+
         <div class="content-box">
 
             <h3>
@@ -647,8 +1085,10 @@ footer strong {
                 التي تستحق المشاهدة مرة ثانية.
             </p>
 
-            <div class="buttons"
-                 style="justify-content:flex-start;">
+            <div
+                class="buttons"
+                style="justify-content:flex-start;"
+            >
 
                 <a
                     class="button dark"
@@ -662,6 +1102,49 @@ footer strong {
 
         </div>
 
+
+    </div>
+
+</section>
+
+
+<!-- ================= COMMUNITY / DISCORD ================= -->
+
+<section id="community">
+
+    <div class="section-label">
+        COMMUNITY
+    </div>
+
+    <h2>
+        مجتمع LLE
+    </h2>
+
+    <p class="intro">
+        لا تكتفِ بالمشاهدة.
+        كن جزءًا من المجتمع والرحلة.
+    </p>
+
+
+    <div class="discord-box">
+
+        <h3>
+            Discord
+        </h3>
+
+        <p>
+            انضم إلى ديسكورد LLE وكن قريبًا
+            من المجتمع، الأخبار، النقاشات
+            وكل جديد.
+        </p>
+
+        <a
+            class="discord-button"
+            href="https://discord.gg/5MUbA7DZ"
+            target="_blank"
+        >
+            انضم إلى Discord ↗
+        </a>
 
     </div>
 
@@ -685,7 +1168,9 @@ footer strong {
         وكن قريبًا من كل جديد.
     </p>
 
+
     <div class="socials">
+
 
         <a
             class="social"
@@ -695,6 +1180,7 @@ footer strong {
             X / Twitter
         </a>
 
+
         <a
             class="social"
             href="https://www.youtube.com/user/MrLLE99"
@@ -702,6 +1188,7 @@ footer strong {
         >
             YouTube
         </a>
+
 
         <a
             class="social"
@@ -711,6 +1198,7 @@ footer strong {
             Snapchat
         </a>
 
+
         <a
             class="social"
             href="https://www.instagram.com/lle_97"
@@ -719,6 +1207,7 @@ footer strong {
             Instagram
         </a>
 
+
         <a
             class="social"
             href="https://kick.com/lle"
@@ -726,6 +1215,16 @@ footer strong {
         >
             Kick
         </a>
+
+
+        <a
+            class="social"
+            href="https://discord.gg/5MUbA7DZ"
+            target="_blank"
+        >
+            Discord
+        </a>
+
 
     </div>
 
@@ -743,6 +1242,7 @@ footer strong {
     </p>
 
 </footer>
+
 
 </body>
 </html>
