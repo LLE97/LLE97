@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,231 +10,118 @@
   <style>
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
     }
 
     body {
+      margin: 0;
       font-family: Arial, Tahoma, sans-serif;
-      color: #ffffff;
-      min-height: 100vh;
-      overflow-x: hidden;
-
-      background:
-        radial-gradient(circle at 15% 20%, rgba(111, 61, 180, 0.35), transparent 28%),
-        radial-gradient(circle at 85% 15%, rgba(40, 100, 190, 0.25), transparent 30%),
-        radial-gradient(circle at 50% 85%, rgba(90, 40, 150, 0.25), transparent 35%),
-        linear-gradient(135deg, #080812, #111126 45%, #090914);
-
-      position: relative;
-    }
-
-    /* نجوم الخلفية */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,.8) 1px, transparent 1px),
-        radial-gradient(circle, rgba(170,190,255,.6) 1px, transparent 1px),
-        radial-gradient(circle, rgba(255,255,255,.4) 1px, transparent 1px);
-
-      background-size: 120px 120px, 190px 190px, 260px 260px;
-      background-position: 10px 20px, 60px 80px, 130px 30px;
-      opacity: .35;
-    }
-
-    /* توهج فضائي */
-    body::after {
-      content: "";
-      position: fixed;
-      width: 700px;
-      height: 700px;
-      top: -350px;
-      left: -250px;
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: -1;
-
-      background: radial-gradient(
-        circle,
-        rgba(120, 75, 210, .18),
-        transparent 65%
-      );
-
-      filter: blur(30px);
+      background: #ffffff;
+      color: #111111;
     }
 
     .container {
-      width: min(1100px, 92%);
+      width: 90%;
+      max-width: 1100px;
       margin: auto;
-      padding: 70px 0;
+      padding: 60px 0;
     }
 
     /* العنوان */
-    .hero {
+
+    .header {
       text-align: center;
-      margin-bottom: 65px;
+      margin-bottom: 60px;
     }
 
-    .hero h1 {
-      font-size: clamp(42px, 8vw, 78px);
-      letter-spacing: 8px;
-      margin-bottom: 15px;
-
-      background: linear-gradient(
-        135deg,
-        #ffffff,
-        #b9b5ff,
-        #ffffff
-      );
-
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .header h1 {
+      font-size: 60px;
+      margin: 0 0 10px;
+      font-weight: 800;
+      letter-spacing: 5px;
     }
 
-    .hero p {
-      color: #aaa9c2;
+    .header p {
+      color: #777;
       font-size: 16px;
-      letter-spacing: 2px;
+      margin: 0;
     }
 
-    /* قسم الشخصيات */
+    /* الشخصيات */
+
     .characters {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 30px;
+      gap: 35px;
     }
 
-    .character {
-      background: rgba(15, 15, 30, .72);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius: 24px;
+    .card {
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+      border-radius: 20px;
       overflow: hidden;
-
-      box-shadow:
-        0 20px 60px rgba(0,0,0,.35),
-        inset 0 1px 0 rgba(255,255,255,.05);
-
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-
-      transition:
-        transform .3s ease,
-        border-color .3s ease,
-        box-shadow .3s ease;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      transition: 0.3s ease;
     }
 
-    .character:hover {
-      transform: translateY(-7px);
-      border-color: rgba(180,170,255,.35);
-
-      box-shadow:
-        0 30px 70px rgba(0,0,0,.45),
-        0 0 35px rgba(100,80,200,.10);
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
     }
 
-    /* الصورة */
-    .image-wrapper {
-      position: relative;
+    .image-box {
+      width: 100%;
+      height: 430px;
       overflow: hidden;
       cursor: pointer;
-      background: #08080f;
+      background: #f5f5f5;
     }
 
-    .image-wrapper img {
-      display: block;
+    .image-box img {
       width: 100%;
-      height: 420px;
+      height: 100%;
       object-fit: cover;
-
-      transition: transform .5s ease;
+      display: block;
+      transition: transform 0.4s ease;
     }
 
-    .image-wrapper:hover img {
-      transform: scale(1.04);
+    .image-box:hover img {
+      transform: scale(1.03);
     }
 
-    .image-overlay {
-      position: absolute;
-      inset: 0;
-
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-
-      padding: 25px;
-
-      background: linear-gradient(
-        transparent 50%,
-        rgba(0,0,0,.75)
-      );
-
-      opacity: 0;
-      transition: opacity .3s ease;
-    }
-
-    .image-wrapper:hover .image-overlay {
-      opacity: 1;
-    }
-
-    .image-overlay span {
-      font-size: 14px;
-      color: #ffffff;
-      background: rgba(0,0,0,.55);
-      padding: 9px 18px;
-      border-radius: 30px;
-      backdrop-filter: blur(8px);
-    }
-
-    /* محتوى البطاقة */
-    .character-content {
+    .card-content {
       padding: 30px;
-      text-align: right;
-
-      /* مهم جداً:
-         لا يوجد هنا أي transform أو قلب */
-      direction: rtl;
     }
 
-    .file-number {
+    .file {
+      color: #999;
+      font-size: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 15px;
       direction: ltr;
       text-align: left;
-      font-size: 11px;
-      letter-spacing: 4px;
-      color: #77768b;
-      margin-bottom: 14px;
     }
 
-    .character-content h2 {
+    .card h2 {
       font-size: 32px;
-      margin-bottom: 18px;
-      color: #ffffff;
-      line-height: 1.4;
+      margin: 0 0 20px;
     }
 
-    .character-content p {
-      color: #aaa9b8;
-      font-size: 16px;
+    .card p {
+      color: #666;
+      font-size: 17px;
       line-height: 2;
+      margin: 0;
     }
 
     /* الحسابات */
+
     .social-section {
       margin-top: 80px;
     }
 
-    .section-title {
+    .social-section h2 {
       text-align: center;
-      font-size: 30px;
+      font-size: 32px;
       margin-bottom: 35px;
     }
 
@@ -244,65 +132,45 @@
     }
 
     .social-link {
-      text-decoration: none;
-      color: #ffffff;
-
       display: flex;
       align-items: center;
       justify-content: center;
 
-      min-height: 62px;
-      padding: 15px;
+      min-height: 65px;
 
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.10);
+      background: #ffffff;
+      border: 1px solid #e2e2e2;
+      border-radius: 14px;
 
-      background: rgba(15,15,30,.65);
+      color: #111;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
 
-      transition:
-        transform .25s ease,
-        background .25s ease,
-        border-color .25s ease;
+      transition: 0.25s ease;
+
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
     }
 
     .social-link:hover {
-      transform: translateY(-4px);
-      background: rgba(45,42,80,.75);
-      border-color: rgba(180,170,255,.35);
+      transform: translateY(-3px);
+      background: #f7f7f7;
+      border-color: #cfcfcf;
     }
 
-    .social-link span {
-      font-size: 15px;
-      font-weight: bold;
-    }
+    /* نافذة الصورة */
 
-    /* الفوتر */
-    footer {
-      text-align: center;
-      margin-top: 80px;
-      padding-top: 30px;
-
-      border-top: 1px solid rgba(255,255,255,.08);
-
-      color: #6f6e80;
-      font-size: 13px;
-    }
-
-    /* نافذة تكبير الصورة */
     .lightbox {
+      display: none;
       position: fixed;
       inset: 0;
+      background: rgba(0, 0, 0, 0.88);
       z-index: 9999;
 
-      display: none;
       align-items: center;
       justify-content: center;
 
-      padding: 25px;
-
-      background: rgba(0,0,0,.90);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      padding: 20px;
     }
 
     .lightbox.active {
@@ -310,20 +178,15 @@
     }
 
     .lightbox img {
-      max-width: 95vw;
+      max-width: 95%;
       max-height: 90vh;
-
       object-fit: contain;
-
-      border-radius: 16px;
-
-      box-shadow:
-        0 30px 100px rgba(0,0,0,.8);
+      border-radius: 12px;
     }
 
-    .close-lightbox {
+    .close {
       position: fixed;
-      top: 25px;
+      top: 20px;
       left: 25px;
 
       width: 45px;
@@ -332,28 +195,41 @@
       border: none;
       border-radius: 50%;
 
-      background: rgba(255,255,255,.12);
+      background: rgba(255, 255, 255, 0.15);
       color: white;
 
-      font-size: 25px;
+      font-size: 30px;
       cursor: pointer;
+    }
 
-      z-index: 10000;
+    footer {
+      text-align: center;
+      margin-top: 70px;
+      padding-top: 25px;
+      border-top: 1px solid #eeeeee;
+
+      color: #999;
+      font-size: 13px;
     }
 
     /* الجوال */
+
     @media (max-width: 750px) {
 
       .container {
-        width: 90%;
-        padding: 45px 0;
+        width: 92%;
+        padding: 40px 0;
+      }
+
+      .header h1 {
+        font-size: 48px;
       }
 
       .characters {
         grid-template-columns: 1fr;
       }
 
-      .image-wrapper img {
+      .image-box {
         height: 360px;
       }
 
@@ -361,12 +237,16 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .character-content {
+      .card-content {
         padding: 24px;
       }
 
-      .character-content h2 {
+      .card h2 {
         font-size: 27px;
+      }
+
+      .card p {
+        font-size: 16px;
       }
     }
 
@@ -376,55 +256,64 @@
         grid-template-columns: 1fr;
       }
 
-      .image-wrapper img {
+      .image-box {
         height: 330px;
       }
     }
   </style>
 </head>
 
+
 <body>
 
-  <main class="container">
+  <div class="container">
 
     <!-- العنوان -->
-    <section class="hero">
+
+    <header class="header">
+
       <h1>LLE</h1>
-      <p>رحلة في عالم للي وشخصياته ولحظاته</p>
-    </section>
+
+      <p>
+        رحلة في عالم للي وشخصياته ولحظاته
+      </p>
+
+    </header>
 
 
     <!-- الشخصيات -->
+
     <section class="characters">
 
       <!-- الشرطي للي -->
-      <article class="character">
+
+      <article class="card">
 
         <div
-          class="image-wrapper"
-          onclick="openLightbox('IMG_8101.jpeg')"
+          class="image-box"
+          onclick="openImage('IMG_8101.jpeg')"
         >
+
           <img
             src="IMG_8101.jpeg"
             alt="الشرطي للي"
           >
 
-          <div class="image-overlay">
-            <span>اضغط لتكبير الصورة</span>
-          </div>
         </div>
 
-        <div class="character-content">
 
-          <div class="file-number">
+        <div class="card-content">
+
+          <div class="file">
             FILE 01 • POLICE
           </div>
 
-          <h2>الشرطي للي</h2>
+          <h2>
+            الشرطي للي
+          </h2>
 
           <p>
-            أحد أشهر تجسيدات للي، شخصية صنعت حضورًا خاصًا في المحتوى والبثوث،
-            وارتبطت بالكثير من المواقف واللحظات التي عشناها معه.
+            أحد أشهر تجسيدات للي، شخصية صنعت حضورًا خاصًا في المحتوى والبثوث ، وارتبطت بالكثير من المواقف واللحظات التي عشناها معه.
           </p>
 
         </div>
@@ -433,33 +322,34 @@
 
 
       <!-- Better Call LLE -->
-      <article class="character">
+
+      <article class="card">
 
         <div
-          class="image-wrapper"
-          onclick="openLightbox('7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg')"
+          class="image-box"
+          onclick="openImage('7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg')"
         >
+
           <img
             src="7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg"
             alt="Better Call LLE"
           >
 
-          <div class="image-overlay">
-            <span>اضغط لتكبير الصورة</span>
-          </div>
         </div>
 
-        <div class="character-content">
 
-          <div class="file-number">
+        <div class="card-content">
+
+          <div class="file">
             FILE 02 • LAWYER
           </div>
 
-          <h2>Better Call LLE</h2>
+          <h2>
+            Better Call LLE
+          </h2>
 
           <p>
-            إحدى الشخصيات المميزة التي ظهر بها للي، وقدمت طابعًا مختلفًا
-            وحضورًا خاصًا ترك بصمته بين الشخصيات التي عرفناها معه.
+            إحدى أشهر الشخصيات التي ظهر بها للي، المحامي للي الذي أضاف طابعًا مختلفًا وحضورًا مميزًا إلى المحتوى.
           </p>
 
         </div>
@@ -470,13 +360,17 @@
 
 
     <!-- الحسابات -->
+
     <section class="social-section">
 
-      <h2 class="section-title">
-        حسابات للي
+      <h2>
+        حسابات LLE
       </h2>
 
+
       <div class="social-grid">
+
+        <!-- X -->
 
         <a
           class="social-link"
@@ -484,8 +378,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>𝕏 — X</span>
+          𝕏 — X
         </a>
+
+
+        <!-- YouTube -->
 
         <a
           class="social-link"
@@ -493,8 +390,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>▶ — YouTube</span>
+          ▶ — YouTube
         </a>
+
+
+        <!-- Snapchat -->
 
         <a
           class="social-link"
@@ -502,8 +402,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>👻 — Snapchat</span>
+          👻 — Snapchat
         </a>
+
+
+        <!-- Instagram -->
 
         <a
           class="social-link"
@@ -511,8 +414,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>◎ — Instagram</span>
+          ◎ — Instagram
         </a>
+
+
+        <!-- Instagram Group -->
 
         <a
           class="social-link"
@@ -520,8 +426,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>◎ — قروب Instagram</span>
+          ◎ — قروب Instagram
         </a>
+
+
+        <!-- TikTok -->
 
         <a
           class="social-link"
@@ -529,8 +438,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>♪ — TikTok</span>
+          ♪ — TikTok
         </a>
+
+
+        <!-- Jaco -->
 
         <a
           class="social-link"
@@ -538,8 +450,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>Jaco</span>
+          Jaco
         </a>
+
+
+        <!-- Twitch -->
 
         <a
           class="social-link"
@@ -547,8 +462,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>◉ — Twitch</span>
+          ◉ — Twitch
         </a>
+
+
+        <!-- Kick -->
 
         <a
           class="social-link"
@@ -556,8 +474,11 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>⚡ — Kick</span>
+          ⚡ — Kick
         </a>
+
+
+        <!-- Discord -->
 
         <a
           class="social-link"
@@ -565,7 +486,7 @@
           target="_blank"
           rel="noopener noreferrer"
         >
-          <span>Discord</span>
+          Discord
         </a>
 
       </div>
@@ -577,26 +498,26 @@
       LLE • 2026
     </footer>
 
-  </main>
+  </div>
 
 
   <!-- تكبير الصور -->
+
   <div
     class="lightbox"
     id="lightbox"
-    onclick="closeLightbox(event)"
+    onclick="closeImage(event)"
   >
 
     <button
-      class="close-lightbox"
-      onclick="closeLightbox()"
-      aria-label="إغلاق"
+      class="close"
+      onclick="closeImage()"
     >
       ×
     </button>
 
     <img
-      id="lightbox-image"
+      id="lightboxImage"
       src=""
       alt=""
     >
@@ -606,34 +527,37 @@
 
   <script>
 
-    function openLightbox(imageSrc) {
+    function openImage(src) {
 
-      const lightbox = document.getElementById("lightbox");
-      const image = document.getElementById("lightbox-image");
+      document
+        .getElementById("lightboxImage")
+        .src = src;
 
-      image.src = imageSrc;
-
-      lightbox.classList.add("active");
+      document
+        .getElementById("lightbox")
+        .classList.add("active");
 
       document.body.style.overflow = "hidden";
     }
 
 
-    function closeLightbox(event) {
+    function closeImage(event) {
 
       if (
         event &&
         event.target &&
-        event.target.id === "lightbox-image"
+        event.target.id === "lightboxImage"
       ) {
         return;
       }
 
-      const lightbox = document.getElementById("lightbox");
+      document
+        .getElementById("lightbox")
+        .classList.remove("active");
 
-      lightbox.classList.remove("active");
-
-      document.getElementById("lightbox-image").src = "";
+      document
+        .getElementById("lightboxImage")
+        .src = "";
 
       document.body.style.overflow = "";
     }
@@ -642,7 +566,7 @@
     document.addEventListener("keydown", function(event) {
 
       if (event.key === "Escape") {
-        closeLightbox();
+        closeImage();
       }
 
     });
@@ -650,4 +574,5 @@
   </script>
 
 </body>
+
 </html>
