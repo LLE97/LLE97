@@ -1,95 +1,653 @@
-body {
-    font-family: Arial, sans-serif;
-    color: #fff;
-    line-height: 1.8;
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    background:
-        radial-gradient(
-            circle at 15% 15%,
-            rgba(104, 70, 180, 0.28),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 85% 25%,
-            rgba(55, 95, 190, 0.22),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 50% 75%,
-            rgba(120, 45, 150, 0.18),
-            transparent 32%
-        ),
-        linear-gradient(
-            135deg,
-            #050713 0%,
-            #0a0b20 35%,
-            #11102b 65%,
-            #070817 100%
-        );
+  <title>LLE</title>
 
-    background-attachment: fixed;
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-    position: relative;
-    overflow-x: hidden;
-}
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Tahoma, sans-serif;
+      color: #ffffff;
+      min-height: 100vh;
+      overflow-x: hidden;
+
+      background:
+        radial-gradient(circle at 15% 20%, rgba(111, 61, 180, 0.35), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(40, 100, 190, 0.25), transparent 30%),
+        radial-gradient(circle at 50% 85%, rgba(90, 40, 150, 0.25), transparent 35%),
+        linear-gradient(135deg, #080812, #111126 45%, #090914);
+
+      position: relative;
+    }
+
+    /* نجوم الخلفية */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+
+      background-image:
+        radial-gradient(circle, rgba(255,255,255,.8) 1px, transparent 1px),
+        radial-gradient(circle, rgba(170,190,255,.6) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,255,255,.4) 1px, transparent 1px);
+
+      background-size: 120px 120px, 190px 190px, 260px 260px;
+      background-position: 10px 20px, 60px 80px, 130px 30px;
+      opacity: .35;
+    }
+
+    /* توهج فضائي */
+    body::after {
+      content: "";
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      top: -350px;
+      left: -250px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: -1;
+
+      background: radial-gradient(
+        circle,
+        rgba(120, 75, 210, .18),
+        transparent 65%
+      );
+
+      filter: blur(30px);
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: auto;
+      padding: 70px 0;
+    }
+
+    /* العنوان */
+    .hero {
+      text-align: center;
+      margin-bottom: 65px;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 8vw, 78px);
+      letter-spacing: 8px;
+      margin-bottom: 15px;
+
+      background: linear-gradient(
+        135deg,
+        #ffffff,
+        #b9b5ff,
+        #ffffff
+      );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      color: #aaa9c2;
+      font-size: 16px;
+      letter-spacing: 2px;
+    }
+
+    /* قسم الشخصيات */
+    .characters {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+
+    .character {
+      background: rgba(15, 15, 30, .72);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 24px;
+      overflow: hidden;
+
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.05);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      transition:
+        transform .3s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+    }
+
+    .character:hover {
+      transform: translateY(-7px);
+      border-color: rgba(180,170,255,.35);
+
+      box-shadow:
+        0 30px 70px rgba(0,0,0,.45),
+        0 0 35px rgba(100,80,200,.10);
+    }
+
+    /* الصورة */
+    .image-wrapper {
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: #08080f;
+    }
+
+    .image-wrapper img {
+      display: block;
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+
+      transition: transform .5s ease;
+    }
+
+    .image-wrapper:hover img {
+      transform: scale(1.04);
+    }
+
+    .image-overlay {
+      position: absolute;
+      inset: 0;
+
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+
+      padding: 25px;
+
+      background: linear-gradient(
+        transparent 50%,
+        rgba(0,0,0,.75)
+      );
+
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+
+    .image-wrapper:hover .image-overlay {
+      opacity: 1;
+    }
+
+    .image-overlay span {
+      font-size: 14px;
+      color: #ffffff;
+      background: rgba(0,0,0,.55);
+      padding: 9px 18px;
+      border-radius: 30px;
+      backdrop-filter: blur(8px);
+    }
+
+    /* محتوى البطاقة */
+    .character-content {
+      padding: 30px;
+      text-align: right;
+
+      /* مهم جداً:
+         لا يوجد هنا أي transform أو قلب */
+      direction: rtl;
+    }
+
+    .file-number {
+      direction: ltr;
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #77768b;
+      margin-bottom: 14px;
+    }
+
+    .character-content h2 {
+      font-size: 32px;
+      margin-bottom: 18px;
+      color: #ffffff;
+      line-height: 1.4;
+    }
+
+    .character-content p {
+      color: #aaa9b8;
+      font-size: 16px;
+      line-height: 2;
+    }
+
+    /* الحسابات */
+    .social-section {
+      margin-top: 80px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 30px;
+      margin-bottom: 35px;
+    }
+
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .social-link {
+      text-decoration: none;
+      color: #ffffff;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 62px;
+      padding: 15px;
+
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.10);
+
+      background: rgba(15,15,30,.65);
+
+      transition:
+        transform .25s ease,
+        background .25s ease,
+        border-color .25s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-4px);
+      background: rgba(45,42,80,.75);
+      border-color: rgba(180,170,255,.35);
+    }
+
+    .social-link span {
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    /* الفوتر */
+    footer {
+      text-align: center;
+      margin-top: 80px;
+      padding-top: 30px;
+
+      border-top: 1px solid rgba(255,255,255,.08);
+
+      color: #6f6e80;
+      font-size: 13px;
+    }
+
+    /* نافذة تكبير الصورة */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      padding: 25px;
+
+      background: rgba(0,0,0,.90);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 95vw;
+      max-height: 90vh;
+
+      object-fit: contain;
+
+      border-radius: 16px;
+
+      box-shadow:
+        0 30px 100px rgba(0,0,0,.8);
+    }
+
+    .close-lightbox {
+      position: fixed;
+      top: 25px;
+      left: 25px;
+
+      width: 45px;
+      height: 45px;
+
+      border: none;
+      border-radius: 50%;
+
+      background: rgba(255,255,255,.12);
+      color: white;
+
+      font-size: 25px;
+      cursor: pointer;
+
+      z-index: 10000;
+    }
+
+    /* الجوال */
+    @media (max-width: 750px) {
+
+      .container {
+        width: 90%;
+        padding: 45px 0;
+      }
+
+      .characters {
+        grid-template-columns: 1fr;
+      }
+
+      .image-wrapper img {
+        height: 360px;
+      }
+
+      .social-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .character-content {
+        padding: 24px;
+      }
+
+      .character-content h2 {
+        font-size: 27px;
+      }
+    }
+
+    @media (max-width: 450px) {
+
+      .social-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .image-wrapper img {
+        height: 330px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <!-- العنوان -->
+    <section class="hero">
+      <h1>LLE</h1>
+      <p>رحلة في عالم للي وشخصياته ولحظاته</p>
+    </section>
 
 
-/* نجوم الفضاء */
+    <!-- الشخصيات -->
+    <section class="characters">
 
-body::before {
-    content: "";
+      <!-- الشرطي للي -->
+      <article class="character">
 
-    position: fixed;
-    inset: 0;
+        <div
+          class="image-wrapper"
+          onclick="openLightbox('IMG_8101.jpeg')"
+        >
+          <img
+            src="IMG_8101.jpeg"
+            alt="الشرطي للي"
+          >
 
-    pointer-events: none;
+          <div class="image-overlay">
+            <span>اضغط لتكبير الصورة</span>
+          </div>
+        </div>
 
-    background-image:
-        radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1.5px),
-        radial-gradient(circle, rgba(170,190,255,0.55) 1px, transparent 1.5px),
-        radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1.5px);
+        <div class="character-content">
 
-    background-size:
-        170px 170px,
-        260px 260px,
-        330px 330px;
+          <div class="file-number">
+            FILE 01 • POLICE
+          </div>
 
-    background-position:
-        20px 30px,
-        80px 120px,
-        150px 60px;
+          <h2>الشرطي للي</h2>
 
-    opacity: 0.45;
+          <p>
+            أحد أشهر تجسيدات للي، شخصية صنعت حضورًا خاصًا في المحتوى والبثوث،
+            وارتبطت بالكثير من المواقف واللحظات التي عشناها معه.
+          </p>
 
-    z-index: -1;
-}
+        </div>
+
+      </article>
 
 
-/* توهج فضائي خفيف */
+      <!-- Better Call LLE -->
+      <article class="character">
 
-body::after {
-    content: "";
+        <div
+          class="image-wrapper"
+          onclick="openLightbox('7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg')"
+        >
+          <img
+            src="7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg"
+            alt="Better Call LLE"
+          >
 
-    position: fixed;
-    width: 650px;
-    height: 650px;
+          <div class="image-overlay">
+            <span>اضغط لتكبير الصورة</span>
+          </div>
+        </div>
 
-    top: -250px;
-    right: -180px;
+        <div class="character-content">
 
-    border-radius: 50%;
+          <div class="file-number">
+            FILE 02 • LAWYER
+          </div>
 
-    background:
-        radial-gradient(
-            circle,
-            rgba(115, 75, 220, 0.22),
-            rgba(70, 50, 150, 0.08) 40%,
-            transparent 70%
-        );
+          <h2>Better Call LLE</h2>
 
-    filter: blur(25px);
+          <p>
+            إحدى الشخصيات المميزة التي ظهر بها للي، وقدمت طابعًا مختلفًا
+            وحضورًا خاصًا ترك بصمته بين الشخصيات التي عرفناها معه.
+          </p>
 
-    pointer-events: none;
+        </div>
 
-    z-index: -1;
-}
+      </article>
+
+    </section>
+
+
+    <!-- الحسابات -->
+    <section class="social-section">
+
+      <h2 class="section-title">
+        حسابات للي
+      </h2>
+
+      <div class="social-grid">
+
+        <a
+          class="social-link"
+          href="https://x.com/lle_97?s=21"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>𝕏 — X</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://www.youtube.com/user/MrLLE99"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>▶ — YouTube</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://www.snapchat.com/add/lle_98"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>👻 — Snapchat</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://www.instagram.com/lle_97?igsh=MWRjZjBiZmVpc3Ixcw=="
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>◎ — Instagram</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://www.instagram.com/channel/AbYY2g4pw9sfF5yi/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>◎ — قروب Instagram</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://www.tiktok.com/@lle97?_r=1&_t=ZS-98pTgstNUdm"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>♪ — TikTok</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://l.jaco.live/Meyxb8wWRc"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>Jaco</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://twitch.tv/lle_97"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>◉ — Twitch</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://kick.com/lle"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>⚡ — Kick</span>
+        </a>
+
+        <a
+          class="social-link"
+          href="https://discord.gg/5MUbA7DZ"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>Discord</span>
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <footer>
+      LLE • 2026
+    </footer>
+
+  </main>
+
+
+  <!-- تكبير الصور -->
+  <div
+    class="lightbox"
+    id="lightbox"
+    onclick="closeLightbox(event)"
+  >
+
+    <button
+      class="close-lightbox"
+      onclick="closeLightbox()"
+      aria-label="إغلاق"
+    >
+      ×
+    </button>
+
+    <img
+      id="lightbox-image"
+      src=""
+      alt=""
+    >
+
+  </div>
+
+
+  <script>
+
+    function openLightbox(imageSrc) {
+
+      const lightbox = document.getElementById("lightbox");
+      const image = document.getElementById("lightbox-image");
+
+      image.src = imageSrc;
+
+      lightbox.classList.add("active");
+
+      document.body.style.overflow = "hidden";
+    }
+
+
+    function closeLightbox(event) {
+
+      if (
+        event &&
+        event.target &&
+        event.target.id === "lightbox-image"
+      ) {
+        return;
+      }
+
+      const lightbox = document.getElementById("lightbox");
+
+      lightbox.classList.remove("active");
+
+      document.getElementById("lightbox-image").src = "";
+
+      document.body.style.overflow = "";
+    }
+
+
+    document.addEventListener("keydown", function(event) {
+
+      if (event.key === "Escape") {
+        closeLightbox();
+      }
+
+    });
+
+  </script>
+
+</body>
+</html>
