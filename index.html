@@ -35,19 +35,15 @@ header {
     right: 0;
     left: 0;
     z-index: 1000;
-
     background: rgba(5,5,5,0.72);
     backdrop-filter: blur(18px);
-
     border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .navbar {
     max-width: 1150px;
     margin: auto;
-
     padding: 18px 25px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -78,67 +74,50 @@ nav a:hover {
 
 .hero {
     min-height: 100vh;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     text-align: center;
-
     padding: 130px 20px 80px;
-
     position: relative;
     overflow: hidden;
 }
 
 .hero::before {
     content: "";
-
     position: absolute;
     inset: 0;
-
     background:
         radial-gradient(
             circle at center,
             rgba(255,255,255,0.08),
             transparent 45%
         );
-
     pointer-events: none;
 }
 
 .hero-content {
     width: 100%;
     max-width: 900px;
-
     position: relative;
     z-index: 2;
 }
 
 .badge {
     display: inline-block;
-
     padding: 7px 18px;
-
     border: 1px solid #333;
     border-radius: 50px;
-
     color: #999;
-
     font-size: 13px;
-
     margin-bottom: 25px;
 }
 
 .hero h1 {
     font-size: clamp(70px, 14vw, 140px);
-
     line-height: 0.9;
-
     letter-spacing: 8px;
-
     font-weight: 900;
-
     margin-bottom: 25px;
 }
 
@@ -148,64 +127,40 @@ nav a:hover {
 
 .hero-description {
     max-width: 650px;
-
     margin: auto;
-
     color: #999;
-
     font-size: 17px;
 }
 
-/* الصورة الرئيسية */
-
 .hero-image {
     width: min(480px, 90vw);
-
     margin: 45px auto 0;
-
     border-radius: 25px;
-
     overflow: hidden;
-
     border: 1px solid #292929;
-
-    box-shadow:
-        0 30px 90px rgba(0,0,0,0.7);
+    box-shadow: 0 30px 90px rgba(0,0,0,0.7);
 }
 
 .hero-image img {
     display: block;
-
     width: 100%;
-
     height: auto;
 }
 
-/* الأزرار */
-
 .buttons {
     margin-top: 30px;
-
     display: flex;
-
     justify-content: center;
-
     gap: 12px;
-
     flex-wrap: wrap;
 }
 
 .button {
     padding: 12px 25px;
-
     border-radius: 12px;
-
     background: #fff;
-
     color: #000;
-
     font-weight: bold;
-
     transition: 0.3s;
 }
 
@@ -215,9 +170,7 @@ nav a:hover {
 
 .button.dark {
     background: #151515;
-
     color: #fff;
-
     border: 1px solid #333;
 }
 
@@ -225,35 +178,26 @@ nav a:hover {
 
 section {
     max-width: 1150px;
-
     margin: auto;
-
     padding: 100px 25px;
 }
 
 .section-label {
     color: #555;
-
     font-size: 13px;
-
     letter-spacing: 3px;
-
     margin-bottom: 8px;
 }
 
 section h2 {
     font-size: clamp(38px, 6vw, 65px);
-
     line-height: 1.1;
-
     margin-bottom: 20px;
 }
 
 .intro {
     max-width: 700px;
-
     color: #888;
-
     font-size: 17px;
 }
 
@@ -261,24 +205,14 @@ section h2 {
 
 .about-box {
     margin-top: 45px;
-
     padding: 35px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #171717,
-            #0c0c0c
-        );
-
+    background: linear-gradient(145deg, #171717, #0c0c0c);
     border: 1px solid #292929;
-
     border-radius: 25px;
 }
 
 .about-box p {
     color: #999;
-
     margin-bottom: 15px;
 }
 
@@ -294,39 +228,28 @@ section h2 {
 
 .characters-grid {
     margin-top: 45px;
-
     display: grid;
-
     grid-template-columns: repeat(2, 1fr);
-
     gap: 25px;
 }
 
 .character-card {
     background: #101010;
-
     border: 1px solid #292929;
-
     border-radius: 25px;
-
     overflow: hidden;
-
     transition: 0.35s;
 }
 
 .character-card:hover {
     transform: translateY(-8px);
-
     border-color: #555;
 }
 
 .character-card img {
     width: 100%;
-
     height: 230px;
-
     object-fit: cover;
-
     display: block;
 }
 
@@ -336,21 +259,17 @@ section h2 {
 
 .character-number {
     color: #555;
-
     font-size: 13px;
-
     letter-spacing: 2px;
 }
 
 .character-info h3 {
     font-size: 27px;
-
     margin: 8px 0;
 }
 
 .character-info p {
     color: #888;
-
     font-size: 15px;
 }
 
@@ -358,46 +277,29 @@ section h2 {
 
 .content-grid {
     margin-top: 45px;
-
     display: grid;
-
     grid-template-columns: repeat(2, 1fr);
-
     gap: 25px;
 }
 
 .content-box {
     min-height: 280px;
-
     padding: 35px;
-
     border-radius: 25px;
-
     border: 1px solid #292929;
-
-    background:
-        linear-gradient(
-            145deg,
-            #171717,
-            #0c0c0c
-        );
-
+    background: linear-gradient(145deg, #171717, #0c0c0c);
     display: flex;
-
     flex-direction: column;
-
     justify-content: flex-end;
 }
 
 .content-box h3 {
     font-size: 32px;
-
     margin-bottom: 8px;
 }
 
 .content-box p {
     color: #888;
-
     font-size: 15px;
 }
 
@@ -405,33 +307,23 @@ section h2 {
 
 .socials {
     margin-top: 35px;
-
     display: flex;
-
     flex-wrap: wrap;
-
     gap: 12px;
 }
 
 .social {
     padding: 14px 23px;
-
     border-radius: 13px;
-
     background: #121212;
-
     border: 1px solid #292929;
-
     color: #aaa;
-
     transition: 0.3s;
 }
 
 .social:hover {
     color: #fff;
-
     border-color: #666;
-
     transform: translateY(-4px);
 }
 
@@ -439,11 +331,8 @@ section h2 {
 
 footer {
     text-align: center;
-
     padding: 50px 20px;
-
     border-top: 1px solid #191919;
-
     color: #555;
 }
 
@@ -469,7 +358,6 @@ footer strong {
 
     .hero h1 {
         font-size: 75px;
-
         letter-spacing: 4px;
     }
 
@@ -483,7 +371,6 @@ footer strong {
 
     .characters-grid {
         grid-template-columns: 1fr;
-
         gap: 20px;
     }
 
@@ -504,11 +391,7 @@ footer strong {
 </style>
 </head>
 
-
 <body>
-
-
-<!-- ================= NAVBAR ================= -->
 
 <header>
 
@@ -520,25 +403,11 @@ footer strong {
 
     <nav>
 
-        <a href="#home">
-            الرئيسية
-        </a>
-
-        <a href="#about">
-            عن LLE
-        </a>
-
-        <a href="#characters">
-            الشخصيات
-        </a>
-
-        <a href="#content">
-            المحتوى
-        </a>
-
-        <a href="#social">
-            الحسابات
-        </a>
+        <a href="#home">الرئيسية</a>
+        <a href="#about">عن LLE</a>
+        <a href="#characters">الشخصيات</a>
+        <a href="#content">المحتوى</a>
+        <a href="#social">الحسابات</a>
 
     </nav>
 
@@ -566,7 +435,6 @@ footer strong {
         التي صنعت رحلة LLE مع جمهوره.
     </p>
 
-
     <div class="hero-image">
 
         <img
@@ -576,20 +444,13 @@ footer strong {
 
     </div>
 
-
     <div class="buttons">
 
-        <a
-            class="button"
-            href="#characters"
-        >
+        <a class="button" href="#characters">
             اكتشف الشخصيات
         </a>
 
-        <a
-            class="button dark"
-            href="#social"
-        >
+        <a class="button dark" href="#social">
             الحسابات
         </a>
 
@@ -618,7 +479,6 @@ footer strong {
         واللحظات التي صنعت ذكريات مختلفة
         مع الجمهور.
     </p>
-
 
     <div class="about-box">
 
@@ -661,16 +521,15 @@ footer strong {
         التي ظهرت في عالم LLE.
     </p>
 
-
     <div class="characters-grid">
 
 
-        <!-- الشرطي -->
+        <!-- الشرطي LLE -->
 
         <div class="character-card">
 
             <img
-                src="IMG_8099.jpeg"
+                src="IMG_8101.jpeg"
                 alt="الشرطي للي"
             >
 
@@ -700,7 +559,7 @@ footer strong {
         <div class="character-card">
 
             <img
-                src="IMG_8098.jpeg"
+                src="7DB987E4-1DBA-4BD1-A5D8-D0384486C5D4.jpeg"
                 alt="Better Call LLE"
             >
 
@@ -746,7 +605,6 @@ footer strong {
         من البثوث إلى المقاطع،
         لكل نوع من المحتوى طابعه الخاص.
     </p>
-
 
     <div class="content-grid">
 
@@ -827,9 +685,7 @@ footer strong {
         وكن قريبًا من كل جديد.
     </p>
 
-
     <div class="socials">
-
 
         <a
             class="social"
@@ -839,7 +695,6 @@ footer strong {
             X / Twitter
         </a>
 
-
         <a
             class="social"
             href="https://www.youtube.com/user/MrLLE99"
@@ -847,7 +702,6 @@ footer strong {
         >
             YouTube
         </a>
-
 
         <a
             class="social"
@@ -857,7 +711,6 @@ footer strong {
             Snapchat
         </a>
 
-
         <a
             class="social"
             href="https://www.instagram.com/lle_97"
@@ -866,7 +719,6 @@ footer strong {
             Instagram
         </a>
 
-
         <a
             class="social"
             href="https://kick.com/lle"
@@ -874,7 +726,6 @@ footer strong {
         >
             Kick
         </a>
-
 
     </div>
 
@@ -892,7 +743,6 @@ footer strong {
     </p>
 
 </footer>
-
 
 </body>
 </html>
