@@ -1339,6 +1339,7 @@ footer strong {
 
                 <a
                     class="button dark"
+                    id="latest-stream-link"
                     href="https://kick.com/lle"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1379,11 +1380,12 @@ footer strong {
 
                 <a
                     class="button dark"
+                    id="latest-video-link"
                     href="https://www.youtube.com/user/MrLLE99"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    شاهد المقاطع ↗
+                    شاهد آخر مقطع ↗
                 </a>
 
             </div>
@@ -1419,7 +1421,7 @@ footer strong {
 
         <div class="stat-card">
 
-            <div class="stat-number">
+            <div class="stat-number" id="followers">
                 1.91M+
             </div>
 
@@ -1642,6 +1644,116 @@ footer strong {
     </p>
 
 </footer>
+
+
+<script>
+async function loadLLEData() {
+    try {
+        const response = await fetch(
+            './data/lle-data.json?ts=' + Date.now(),
+            {
+                cache: 'no-store'
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error('Failed to load LLE data');
+        }
+
+        const data = await response.json();
+
+
+        /* ================= FOLLOWERS ================= */
+
+        const followers = document.getElementById('followers');
+
+        if (followers && data.followers) {
+            followers.textContent = data.followers;
+        }
+
+
+        /* ================= KICK STATUS ================= */
+
+        const kickStatus = document.querySelector('.kick-status-text');
+        const kickDot = document.querySelector('.status-dot');
+
+        if (kickStatus) {
+            kickStatus.textContent =
+                data.kick_status ||
+                (
+                    data.kick_online
+                        ? 'متصل حالياً'
+                        : 'غير متصل حالياً'
+                );
+        }
+
+        if (kickDot) {
+
+            if (data.kick_online) {
+
+                kickDot.style.background = '#43d17a';
+
+                kickDot.style.boxShadow =
+                    '0 0 0 0 rgba(67,209,122,0.5)';
+
+            } else {
+
+                kickDot.style.background = '#e53935';
+
+                kickDot.style.boxShadow =
+                    '0 0 0 0 rgba(229,57,53,0.5)';
+
+            }
+
+        }
+
+
+        /* ================= LATEST VIDEO ================= */
+
+        const latestVideoLink =
+            document.getElementById('latest-video-link');
+
+        if (
+            latestVideoLink &&
+            data.latest_video &&
+            data.latest_video.url
+        ) {
+
+            latestVideoLink.href =
+                data.latest_video.url;
+
+        }
+
+
+        /* ================= LATEST STREAM ================= */
+
+        const latestStreamLink =
+            document.getElementById('latest-stream-link');
+
+        if (
+            latestStreamLink &&
+            data.latest_stream &&
+            data.latest_stream.url
+        ) {
+
+            latestStreamLink.href =
+                data.latest_stream.url;
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            'LLE data error:',
+            error
+        );
+
+    }
+}
+
+loadLLEData();
+</script>
 
 
 </body>
