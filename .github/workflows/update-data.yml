@@ -1,0 +1,90 @@
+name: Update LLE Data
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v4
+
+      - name: Update data
+        run: |
+          mkdir -p data
+
+          python3 - <<'PY'
+          import json
+          import urllib.request
+          import xml.etree.ElementTree as ET
+          from datetime import datetime, timezone
+
+          data = {
+              "updated": datetime.now(timezone.utc).isoformat(),
+              "followers": "1.91M+",
+              "kick_online": False,
+              "kick_status": "غير متصل حالياً",
+              "latest_video": {
+                  "title": "",
+                  "url": "https://www.youtube.com/user/MrLLE99"
+              },
+              "latest_stream": {
+                  "title": "",
+                  "url": "https://kick.com/lle"
+              }
+          }
+
+          # آخر فيديوهات يوتيوب عبر RSS
+          try:
+              url = "https://www.youtube.com/feeds/videos.xml?channel_id=UCgGYPnVJytkr6sVNLQ-l0zQ"
+
+              request = urllib.request.Request(
+                  url,
+                  headers={"User-Agent": "Mozilla/5.0"}
+              )
+
+              xml_data = urllib.request.urlopen(request, timeout=15).read()
+              root = ET.fromstring(xml_data)
+
+              ns = {
+                  "atom": "http://www.w3.org/2005/Atom",
+                  "yt": "http://www.youtube.com/xml/schemas/2015"
+              }
+
+              entry = root.find("atom:entry", ns)
+
+              if entry is not None:
+                  title = entry.find("atom:title", ns)
+                  video_id = entry.find("yt:videoId", ns)
+
+                  if title is not None and video_id is not None:
+                      data["latest_video"] = {
+                          "title": title.text,
+                          "url": "https://www.youtube.com/watch?v=" + video_id.text
+                      }
+
+          except Exception as e:
+              print("YouTube update failed:", e)
+
+          with open("data/lle-data.json", "w", encoding="utf-8") as f:
+              json.dump(data, f, ensure_ascii=False, indent=2)
+
+          PY
+
+      - name: Save changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add data/lle-data.json
+
+          git diff --cached --quiet || git commit -m "Update LLE data"
+
+          git push
