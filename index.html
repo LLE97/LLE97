@@ -173,7 +173,6 @@ nav a:hover {
     display: block;
 
     width: 100%;
-
     height: auto;
 }
 
@@ -200,14 +199,17 @@ nav a:hover {
     width: 9px;
     height: 9px;
 
-    background: #e53935;
-
     border-radius: 50%;
 
-    box-shadow:
-        0 0 0 0 rgba(229,57,53,0.5);
-
     animation: statusPulse 2s infinite;
+}
+
+.status-dot.offline {
+    background: #e53935;
+}
+
+.status-dot.online {
+    background: #43d17a;
 }
 
 @keyframes statusPulse {
@@ -967,33 +969,13 @@ footer strong {
 
     <nav>
 
-        <a href="#home">
-            الرئيسية
-        </a>
-
-        <a href="#about">
-            عن LLE
-        </a>
-
-        <a href="#characters">
-            الشخصيات
-        </a>
-
-        <a href="#content">
-            المحتوى
-        </a>
-
-        <a href="#stats">
-            الإحصائيات
-        </a>
-
-        <a href="#community">
-            المجتمع
-        </a>
-
-        <a href="#social">
-            الحسابات
-        </a>
+        <a href="#home">الرئيسية</a>
+        <a href="#about">عن LLE</a>
+        <a href="#characters">الشخصيات</a>
+        <a href="#content">المحتوى</a>
+        <a href="#stats">الإحصائيات</a>
+        <a href="#community">المجتمع</a>
+        <a href="#social">الحسابات</a>
 
     </nav>
 
@@ -1036,9 +1018,15 @@ footer strong {
 
     <div class="kick-status">
 
-        <span class="status-dot"></span>
+        <span
+            class="status-dot offline"
+            id="statusDot"
+        ></span>
 
-        <span class="kick-status-text">
+        <span
+            class="kick-status-text"
+            id="kickStatus"
+        >
             غير متصل حالياً
         </span>
 
@@ -1155,7 +1143,6 @@ footer strong {
 
             <div class="character-inner">
 
-
                 <div class="character-front">
 
                     <img
@@ -1209,7 +1196,6 @@ footer strong {
 
                 </div>
 
-
             </div>
 
         </div>
@@ -1223,7 +1209,6 @@ footer strong {
         >
 
             <div class="character-inner">
-
 
                 <div class="character-front">
 
@@ -1279,7 +1264,6 @@ footer strong {
 
                 </div>
 
-
             </div>
 
         </div>
@@ -1327,7 +1311,7 @@ footer strong {
                 البثوث
             </h3>
 
-            <p>
+            <p id="streamTitle">
                 اللحظات العفوية والمواقف
                 التي تحدث مباشرة أمام الجمهور.
             </p>
@@ -1339,7 +1323,7 @@ footer strong {
 
                 <a
                     class="button dark"
-                    id="latest-stream-link"
+                    id="streamButton"
                     href="https://kick.com/lle"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -1365,10 +1349,10 @@ footer strong {
             </div>
 
             <h3>
-                المقاطع
+                آخر مقطع
             </h3>
 
-            <p>
+            <p id="videoTitle">
                 أفضل اللحظات والمقاطع
                 التي تستحق المشاهدة مرة ثانية.
             </p>
@@ -1380,12 +1364,12 @@ footer strong {
 
                 <a
                     class="button dark"
-                    id="latest-video-link"
+                    id="videoButton"
                     href="https://www.youtube.com/user/MrLLE99"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
-                    شاهد آخر مقطع ↗
+                    شاهد المقطع ↗
                 </a>
 
             </div>
@@ -1421,7 +1405,10 @@ footer strong {
 
         <div class="stat-card">
 
-            <div class="stat-number" id="followers">
+            <div
+                class="stat-number"
+                id="followers"
+            >
                 1.91M+
             </div>
 
@@ -1434,7 +1421,10 @@ footer strong {
 
         <div class="stat-card">
 
-            <div class="stat-number">
+            <div
+                class="stat-number"
+                id="streamStatus"
+            >
                 غير محدد
             </div>
 
@@ -1527,7 +1517,6 @@ footer strong {
 
     <div class="socials">
 
-
         <a
             class="social"
             href="https://x.com/lle_97"
@@ -1536,7 +1525,6 @@ footer strong {
         >
             X / Twitter
         </a>
-
 
         <a
             class="social"
@@ -1547,7 +1535,6 @@ footer strong {
             YouTube
         </a>
 
-
         <a
             class="social"
             href="https://www.snapchat.com/add/lle_98"
@@ -1556,7 +1543,6 @@ footer strong {
         >
             Snapchat
         </a>
-
 
         <a
             class="social"
@@ -1567,7 +1553,6 @@ footer strong {
             Instagram
         </a>
 
-
         <a
             class="social"
             href="https://www.instagram.com/channel/AbYY2g4pw9sfF5yi/"
@@ -1576,7 +1561,6 @@ footer strong {
         >
             قروب Instagram
         </a>
-
 
         <a
             class="social"
@@ -1587,7 +1571,6 @@ footer strong {
             TikTok
         </a>
 
-
         <a
             class="social"
             href="https://l.jaco.live/Meyxb8wWRc"
@@ -1596,7 +1579,6 @@ footer strong {
         >
             Jaco
         </a>
-
 
         <a
             class="social"
@@ -1607,7 +1589,6 @@ footer strong {
             Twitch
         </a>
 
-
         <a
             class="social"
             href="https://kick.com/lle"
@@ -1617,7 +1598,6 @@ footer strong {
             Kick
         </a>
 
-
         <a
             class="social"
             href="https://discord.gg/5MUbA7DZ"
@@ -1626,7 +1606,6 @@ footer strong {
         >
             Discord
         </a>
-
 
     </div>
 
@@ -1646,18 +1625,20 @@ footer strong {
 </footer>
 
 
+<!-- ================= DATA ================= -->
+
 <script>
+
 async function loadLLEData() {
+
     try {
+
         const response = await fetch(
-            './data/lle-data.json?ts=' + Date.now(),
-            {
-                cache: 'no-store'
-            }
+            "data/lle-data.json?time=" + Date.now()
         );
 
         if (!response.ok) {
-            throw new Error('Failed to load LLE data');
+            throw new Error("Could not load LLE data");
         }
 
         const data = await response.json();
@@ -1665,61 +1646,72 @@ async function loadLLEData() {
 
         /* ================= FOLLOWERS ================= */
 
-        const followers = document.getElementById('followers');
+        if (data.followers) {
 
-        if (followers && data.followers) {
-            followers.textContent = data.followers;
+            document.getElementById("followers").textContent =
+                data.followers;
+
         }
 
 
         /* ================= KICK STATUS ================= */
 
-        const kickStatus = document.querySelector('.kick-status-text');
-        const kickDot = document.querySelector('.status-dot');
+        const kickStatus =
+            document.getElementById("kickStatus");
 
-        if (kickStatus) {
+        const statusDot =
+            document.getElementById("statusDot");
+
+        const streamStatus =
+            document.getElementById("streamStatus");
+
+
+        if (data.kick_online === true) {
+
             kickStatus.textContent =
-                data.kick_status ||
-                (
-                    data.kick_online
-                        ? 'متصل حالياً'
-                        : 'غير متصل حالياً'
-                );
-        }
+                "متصل الآن";
 
-        if (kickDot) {
+            statusDot.classList.remove("offline");
 
-            if (data.kick_online) {
+            statusDot.classList.add("online");
 
-                kickDot.style.background = '#43d17a';
+            streamStatus.textContent =
+                "متصل الآن";
 
-                kickDot.style.boxShadow =
-                    '0 0 0 0 rgba(67,209,122,0.5)';
+        } else {
 
-            } else {
+            kickStatus.textContent =
+                data.kick_status || "غير متصل حالياً";
 
-                kickDot.style.background = '#e53935';
+            statusDot.classList.remove("online");
 
-                kickDot.style.boxShadow =
-                    '0 0 0 0 rgba(229,57,53,0.5)';
+            statusDot.classList.add("offline");
 
-            }
+            streamStatus.textContent =
+                "غير متصل";
 
         }
 
 
         /* ================= LATEST VIDEO ================= */
 
-        const latestVideoLink =
-            document.getElementById('latest-video-link');
+        if (
+            data.latest_video &&
+            data.latest_video.title
+        ) {
+
+            document.getElementById("videoTitle").textContent =
+                data.latest_video.title;
+
+        }
+
 
         if (
-            latestVideoLink &&
             data.latest_video &&
             data.latest_video.url
         ) {
 
-            latestVideoLink.href =
+            document.getElementById("videoButton").href =
                 data.latest_video.url;
 
         }
@@ -1727,32 +1719,45 @@ async function loadLLEData() {
 
         /* ================= LATEST STREAM ================= */
 
-        const latestStreamLink =
-            document.getElementById('latest-stream-link');
-
         if (
-            latestStreamLink &&
             data.latest_stream &&
-            data.latest_stream.url
+            data.latest_stream.title
         ) {
 
-            latestStreamLink.href =
-                data.latest_stream.url;
+            document.getElementById("streamTitle").textContent =
+                data.latest_stream.title;
 
         }
 
 
-    } catch (error) {
+        if (
+            data.latest_stream &&
+            data.latest_stream.url
+        ) {
+
+            document.getElementById("streamButton").href =
+                data.latest_stream.url;
+
+        }
+
+    }
+
+    catch (error) {
 
         console.error(
-            'LLE data error:',
+            "LLE DATA ERROR:",
             error
         );
 
     }
+
 }
 
+
+/* تشغيل التحديث */
+
 loadLLEData();
+
 </script>
 
 
