@@ -16,15 +16,21 @@ jobs:
       - name: Get repository
         uses: actions/checkout@v4
 
-      - name: Update data
+      - name: Update LLE Data
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
           mkdir -p data
 
           python3 - <<'PY'
           import json
           import urllib.request
+          import urllib.parse
           import xml.etree.ElementTree as ET
           from datetime import datetime, timezone
+
+          YOUTUBE_API_KEY = "${YOUTUBE_API_KEY}"
+          CHANNEL_ID = "UCgGYPnVJytkr6sVNLQ-l0zQ"
 
           data = {
               "updated": datetime.now(timezone.utc).isoformat(),
@@ -33,7 +39,8 @@ jobs:
               "kick_status": "غير متصل حالياً",
               "latest_video": {
                   "title": "",
-                  "url": "https://www.youtube.com/user/MrLLE99"
+                  "url": "",
+                  "thumbnail": ""
               },
               "latest_stream": {
                   "title": "",
@@ -41,16 +48,66 @@ jobs:
               }
           }
 
-          # آخر فيديوهات يوتيوب عبر RSS
+          # ==========================================
+          # YOUTUBE
+          # ==========================================
+
           try:
-              url = "https://www.youtube.com/feeds/videos.xml?channel_id=UCgGYPnVJytkr6sVNLQ-l0zQ"
+              api_url = (
+                  "https://www.googleapis.com/youtube/v3/channels"
+                  "?part=statistics"
+                  "&id=" + CHANNEL_ID +
+                  "&key=" + YOUTUBE_API_KEY
+              )
 
               request = urllib.request.Request(
-                  url,
+                  api_url,
                   headers={"User-Agent": "Mozilla/5.0"}
               )
 
-              xml_data = urllib.request.urlopen(request, timeout=15).read()
+              response = urllib.request.urlopen(request, timeout=20).read()
+              youtube_data = json.loads(response)
+
+              items = youtube_data.get("items", [])
+
+              if items:
+                  statistics = items[0].get("statistics", {})
+                  subscriber_count = statistics.get("subscriberCount")
+
+                  if subscriber_count:
+                      number = int(subscriber_count)
+
+                      if number >= 1000000:
+                          data["followers"] = f"{number / 1000000:.2f}M+"
+                      elif number >= 1000:
+                          data["followers"] = f"{number / 1000:.1f}K+"
+                      else:
+                          data["followers"] = str(number)
+
+          except Exception as e:
+              print("YouTube followers update failed:", e)
+
+
+          # ==========================================
+          # آخر فيديو من YouTube RSS
+          # ==========================================
+
+          try:
+              rss_url = (
+                  "https://www.youtube.com/feeds/videos.xml"
+                  "?channel_id=" + CHANNEL_ID
+              )
+
+              request = urllib.request.Request(
+                  rss_url,
+                  headers={"User-Agent": "Mozilla/5.0"}
+              )
+
+              xml_data = urllib.request.urlopen(
+                  request,
+                  timeout=20
+              ).read()
+
               root = ET.fromstring(xml_data)
 
               ns = {
@@ -64,17 +121,93 @@ jobs:
                   title = entry.find("atom:title", ns)
                   video_id = entry.find("yt:videoId", ns)
 
-                  if title is not None and video_id is not None:
+                  if (
+                      title is not None
+                      and video_id is not None
+                  ):
+                      video_id_text = video_id.text
+
                       data["latest_video"] = {
-                          "title": title.text,
-                          "url": "https://www.youtube.com/watch?v=" + video_id.text
+                          "title": title.text or "",
+                          "url": (
+                              "https://www.youtube.com/watch?v="
+                              + video_id_text
+                          ),
+                          "thumbnail": (
+                              "https://i.ytimg.com/vi/"
+                              + video_id_text
+                              + "/maxresdefault.jpg"
+                          )
                       }
 
           except Exception as e:
-              print("YouTube update failed:", e)
+              print("YouTube video update failed:", e)
 
-          with open("data/lle-data.json", "w", encoding="utf-8") as f:
-              json.dump(data, f, ensure_ascii=False, indent=2)
+
+          # ==========================================
+          # KICK
+          # ==========================================
+
+          try:
+              kick_url = "https://kick.com/api/v2/channels/lle"
+
+              request = urllib.request.Request(
+                  kick_url,
+                  headers={
+                      "User-Agent": "Mozilla/5.0",
+                      "Accept": "application/json"
+                  }
+              )
+
+              response = urllib.request.urlopen(
+                  request,
+                  timeout=20
+              ).read()
+
+              kick_data = json.loads(response)
+
+              livestream = kick_data.get("livestream")
+
+              if livestream:
+                  title = livestream.get("session_title") or livestream.get("slug") or "بث مباشر"
+
+                  data["kick_online"] = True
+                  data["kick_status"] = "يبث الآن"
+
+                  data["latest_stream"] = {
+                      "title": title,
+                      "url": "https://kick.com/lle"
+                  }
+
+              else:
+                  data["kick_online"] = False
+                  data["kick_status"] = "غير متصل حالياً"
+
+          except Exception as e:
+              print("Kick update failed:", e)
+
+
+          # ==========================================
+          # حفظ البيانات
+          # ==========================================
+
+          with open(
+              "data/lle-data.json",
+              "w",
+              encoding="utf-8"
+          ) as f:
+              json.dump(
+                  data,
+                  f,
+                  ensure_ascii=False,
+                  indent=2
+              )
+
+          print(json.dumps(
+              data,
+              ensure_ascii=False,
+              indent=2
+          ))
 
           PY
 
