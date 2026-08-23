@@ -17,6 +17,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update LLE Data
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
           mkdir -p data
 
@@ -26,6 +28,7 @@ jobs:
           import urllib.parse
           import xml.etree.ElementTree as ET
           from datetime import datetime, timezone
+          import os
 
           data = {
               "updated": datetime.now(timezone.utc).isoformat(),
@@ -44,7 +47,72 @@ jobs:
           }
 
           # =========================================================
-          # KICK
+          # YOUTUBE - SUBSCRIBERS
+          # =========================================================
+
+          try:
+              api_key = os.environ.get("YOUTUBE_API_KEY")
+
+              if api_key:
+                  params = urllib.parse.urlencode({
+                      "part": "statistics",
+                      "id": "UCgGYPnVJytkr6sVNLQ-l0zQ",
+                      "key": api_key
+                  })
+
+                  youtube_api_url = (
+                      "https://www.googleapis.com/youtube/v3/channels?"
+                      + params
+                  )
+
+                  request = urllib.request.Request(
+                      youtube_api_url,
+                      headers={"User-Agent": "Mozilla/5.0"}
+                  )
+
+                  response = urllib.request.urlopen(
+                      request,
+                      timeout=15
+                  )
+
+                  result = json.loads(
+                      response.read().decode("utf-8")
+                  )
+
+                  items = result.get("items", [])
+
+                  if items:
+                      subscribers = items[0]["statistics"].get(
+                          "subscriberCount"
+                      )
+
+                      if subscribers:
+                          subscribers = int(subscribers)
+
+                          if subscribers >= 1000000:
+                              data["followers"] = (
+                                  f"{subscribers / 1000000:.2f}M+"
+                              )
+                          elif subscribers >= 1000:
+                              data["followers"] = (
+                                  f"{subscribers / 1000:.1f}K+"
+                              )
+                          else:
+                              data["followers"] = str(subscribers)
+
+                          print(
+                              "YouTube subscribers:",
+                              data["followers"]
+                          )
+
+              else:
+                  print("YOUTUBE_API_KEY is missing")
+
+          except Exception as e:
+              print("YouTube API update failed:", e)
+
+          # =========================================================
+          # KICK - LIVE STATUS
           # =========================================================
 
           try:
@@ -58,24 +126,15 @@ jobs:
                   }
               )
 
-              response = urllib.request.urlopen(request, timeout=15)
-              kick = json.loads(response.read().decode("utf-8"))
+              response = urllib.request.urlopen(
+                  request,
+                  timeout=15
+              )
 
-              # عدد المتابعين
-              followers = kick.get("followersCount")
+              kick = json.loads(
+                  response.read().decode("utf-8")
+              )
 
-              if followers is None:
-                  followers = kick.get("followers_count")
-
-              if followers is not None:
-                  if followers >= 1000000:
-                      data["followers"] = f"{followers / 1000000:.2f}M+"
-                  elif followers >= 1000:
-                      data["followers"] = f"{followers / 1000:.1f}K+"
-                  else:
-                      data["followers"] = str(followers)
-
-              # البث الحالي
               livestream = kick.get("livestream")
 
               if livestream:
@@ -110,7 +169,7 @@ jobs:
               print("Kick update failed:", e)
 
           # =========================================================
-          # YOUTUBE
+          # YOUTUBE - LATEST VIDEO
           # =========================================================
 
           try:
@@ -165,13 +224,16 @@ jobs:
                           )
                       }
 
-                      print("YouTube updated successfully")
+                      print(
+                          "Latest YouTube video:",
+                          title.text
+                      )
 
           except Exception as e:
-              print("YouTube update failed:", e)
+              print("YouTube RSS update failed:", e)
 
           # =========================================================
-          # SAVE
+          # SAVE DATA
           # =========================================================
 
           with open(
@@ -187,7 +249,13 @@ jobs:
                   indent=2
               )
 
-          print(json.dumps(data, ensure_ascii=False, indent=2))
+          print(
+              json.dumps(
+                  data,
+                  ensure_ascii=False,
+                  indent=2
+              )
+          )
 
           PY
 
