@@ -1,15 +1,15 @@
 {
-  "updated": "2026-08-31T20:37:30.588278+00:00",
+  "updated": "2026-08-31T20:52:02.486606+00:00",
   "followers": "1.91M+",
-  "kick_online": false,
-  "kick_status": "غير متصل حالياً",
+  "kick_online": true,
+  "kick_status": "متصل الآن",
   "latest_video": {
     "title": "من افضل واحد يسوي كرواسون في باريس 🇫🇷🥐",
     "url": "https://www.youtube.com/watch?v=qLPXprwD5ZM",
     "thumbnail": "https://i.ytimg.com/vi/qLPXprwD5ZM/maxresdefault.jpg"
   },
   "latest_stream": {
-    "title": "",
+    "title": "بوثيث",
     "url": "https://kick.com/lle"
   }
 }
