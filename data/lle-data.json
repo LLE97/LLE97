@@ -1,15 +1,15 @@
 {
-  "updated": "2026-09-27T01:41:14.448680+00:00",
+  "updated": "2026-09-27T07:07:07.930363+00:00",
   "followers": "1.91M+",
-  "kick_online": true,
-  "kick_status": "متصل الآن",
+  "kick_online": false,
+  "kick_status": "غير متصل حالياً",
   "latest_video": {
-    "title": "",
-    "url": "",
-    "thumbnail": ""
+    "title": "من افضل واحد يسوي كرواسون في باريس 🇫🇷🥐",
+    "url": "https://www.youtube.com/watch?v=qLPXprwD5ZM",
+    "thumbnail": "https://i.ytimg.com/vi/qLPXprwD5ZM/maxresdefault.jpg"
   },
   "latest_stream": {
-    "title": "اخطر مهمه للمستجد بيومي برجر Respect",
+    "title": "",
     "url": "https://kick.com/lle"
   }
 }
