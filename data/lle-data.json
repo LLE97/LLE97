@@ -1,15 +1,15 @@
 {
-  "updated": "2026-10-11T01:41:51.869883+00:00",
+  "updated": "2026-10-11T07:51:38.446670+00:00",
   "followers": "1.91M+",
-  "kick_online": true,
-  "kick_status": "متصل الآن",
+  "kick_online": false,
+  "kick_status": "غير متصل حالياً",
   "latest_video": {
-    "title": "",
-    "url": "",
-    "thumbnail": ""
+    "title": "مقتطفات من فلم عودة المحامي 😂",
+    "url": "https://www.youtube.com/watch?v=W_frQ11U8JQ",
+    "thumbnail": "https://i.ytimg.com/vi/W_frQ11U8JQ/maxresdefault.jpg"
   },
   "latest_stream": {
-    "title": "خفايف 🫡",
+    "title": "",
     "url": "https://kick.com/lle"
   }
 }
