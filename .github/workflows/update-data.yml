@@ -260,11 +260,9 @@ jobs:
           PY
 
       
+
       - name: Save changes
         run: |
-          git fetch origin main
-          git rebase origin/main
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -272,6 +270,14 @@ jobs:
 
           if ! git diff --cached --quiet; then
             git commit -m "Update LLE data"
+          else
+            echo "No data changes to save"
+            exit 0
           fi
+
+          git fetch origin main
+
+          git stash push --include-untracked -m "before-sync" || true
+          git rebase origin/main
 
           git push origin HEAD:main
